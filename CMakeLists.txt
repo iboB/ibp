@@ -3,7 +3,7 @@
 #
 cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
-project(profile)
+project(ibp)
 
 # cpm
 include(./get_cpm.cmake)
@@ -22,9 +22,9 @@ include(icm_add_lib)
 
 #######################################
 # options
-option(PROFILE_STATIC "profile: build as static lib" OFF)
-option(PROFILE_BUILD_TESTS "profile: build tests" ${ICM_DEV_MODE})
-option(PROFILE_BUILD_EXAMPLES "profile: build examples" ${ICM_DEV_MODE})
+option(IBP_STATIC "ibp: build as static lib" OFF)
+option(IBP_BUILD_TESTS "ibp: build tests" ${ICM_DEV_MODE})
+option(IBP_BUILD_EXAMPLES "ibp: build examples" ${ICM_DEV_MODE})
 
 #######################################
 # packages
@@ -34,17 +34,17 @@ CPMAddPackage(gh:iboB/itlib@1.6.3)
 #######################################
 # subdirs
 
-add_subdirectory(code/profile)
+add_subdirectory(code/ibp)
 
 if(ICM_DEV_MODE)
     add_subdirectory(scratch)
 endif()
 
-if(PROFILE_BUILD_EXAMPLES)
-    add_subdirectory(example)
-endif()
+#~ if(IBP_BUILD_EXAMPLES)
+#~     add_subdirectory(example)
+#~ endif()
 
-if(PROFILE_BUILD_TESTS)
-    enable_testing()
-    add_subdirectory(test)
-endif()
+#~ if(IBP_BUILD_TESTS)
+#~     enable_testing()
+#~     add_subdirectory(test)
+#~ endif()
