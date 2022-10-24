@@ -5,12 +5,21 @@
 #include "BlockDesc.hpp"
 #include "Sentry.hpp"
 
-#define I_IBPROFILE_BLOCK_DESC(label) static ::ibp::BlockDesc __ibpBlockDesc(label)
+#define I_IBP_PP_CAT(a, b) I_IBP_PP_INTERNAL_CAT(a, b)
+#define I_IBP_PP_INTERNAL_CAT(a, b) a##b
+
+#define I_IBPROFILE_U_NAME(name) I_IBP_PP_CAT(name, __LINE__)
+
+#define I_IBPROFILE_BLOCK_DESC(label) static thread_local ::ibp::BlockDesc I_IBPROFILE_U_NAME(_ibp_blockDesc)(label)
 
 #define IBPROFILE_SCOPE(label) \
     I_IBPROFILE_BLOCK_DESC(label); \
-    ::ibp::Sentry __ibpSentry(__ibpBlockDesc)
+    ::ibp::Sentry I_IBPROFILE_U_NAME(_ibp_profileSentry)(I_IBPROFILE_U_NAME(_ibp_blockDesc))
 
-#define IBPROFILE_FUNC() \
-    IBPROFILE_SCOPE(__func__)
+#define IBPROFILE_FUNC() IBPROFILE_SCOPE(__func__)
 
+#define IBPROFILE_BLOCK_BEGIN(label) \
+    I_IBPROFILE_BLOCK_DESC(label); \
+    ::ibp::Instance::beginBlock(I_IBPROFILE_U_NAME(_ibp_blockDesc))
+
+#define IBPROFILE_BLOCK_END() ::ibp::Instance::endTopBlock()

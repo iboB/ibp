@@ -10,6 +10,9 @@
 void bar() {
     IBPROFILE_FUNC();
     std::this_thread::sleep_for(std::chrono::milliseconds(20));
+    IBPROFILE_BLOCK_BEGIN("block");
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    IBPROFILE_BLOCK_END();
 }
 
 void foo(int i) {
