@@ -6,10 +6,12 @@ add_library(ibp::ibp ALIAS ibp)
 target_sources(ibp PRIVATE
     API.h
     BlockDesc.hpp
-    Manager.hpp
-    Manager.cpp
+    Instance.hpp
+    Instance.cpp
     Profile.hpp
     Sentry.hpp
+    Frame.hpp
+    Frame.cpp
 )
 
 target_include_directories(ibp INTERFACE ..)

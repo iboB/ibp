@@ -8,14 +8,15 @@ namespace ibp
 {
 
 struct BlockDesc;
+class Frame;
 
-class IBP_API Manager
+class IBP_API Instance
 {
 public:
-    static Manager& i();
+    static void beginFrame(Frame& frame);
 
-    void beginBlock(BlockDesc& desc);
-    void endTopBlock();
+    static void beginBlock(BlockDesc& desc);
+    static void endTopBlock();
 };
 
 }

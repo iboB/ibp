@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 #pragma once
-#include "Manager.hpp"
+#include "Instance.hpp"
 
 namespace ibp
 {
@@ -12,11 +12,11 @@ struct Sentry
 public:
     Sentry(BlockDesc& desc)
     {
-        Manager::i().beginBlock(desc);
+        Instance::beginBlock(desc);
     }
     ~Sentry()
     {
-        Manager::i().endTopBlock();
+        Instance::endTopBlock();
     }
 };
 
