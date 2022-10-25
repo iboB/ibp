@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 #include <doctest/doctest.h>
-#include <ibp/lib/ChunkedBlockStorage.hpp>
+#include <ibp/impl/ChunkedBlockStorage.hpp>
 
 #include <vector>
 

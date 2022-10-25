@@ -4,7 +4,7 @@
 icm_add_lib(ibp IBP)
 add_library(ibp::ibp ALIAS ibp)
 target_sources(ibp PRIVATE
-    lib/ChunkedBlockStorage.hpp
+    impl/ChunkedBlockStorage.hpp
     API.h
     Block.hpp
     BlockDesc.hpp

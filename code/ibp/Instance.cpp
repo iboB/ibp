@@ -18,7 +18,7 @@ class InstanceImpl
 {
 public:
     Frame* m_curFrame = nullptr;
-    std::vector<Block> m_stack;
+    std::vector<Block*> m_stack;
 
     void beginFrame(Frame& frame)
     {
@@ -28,17 +28,17 @@ public:
     void beginBlock(const BlockDesc& desc)
     {
         if (!m_curFrame) return;
-        auto& b = m_stack.emplace_back();
+        auto& b = m_curFrame->m_blocks.emplace_back();
         b.desc = &desc;
+        m_stack.push_back(&b);
         b.nsStart = clock::now().time_since_epoch().count();
     }
 
     void endTopBlock()
     {
         if (!m_curFrame) return;
-        auto& b = m_stack.back();
-        b.nsEnd = clock::now().time_since_epoch().count();;
-        m_curFrame->m_blocks.push_back(std::move(b));
+        auto end = clock::now();
+        m_stack.back()->nsEnd = end.time_since_epoch().count();
         m_stack.pop_back();
     }
 

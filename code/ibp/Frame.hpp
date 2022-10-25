@@ -6,7 +6,8 @@
 
 #include "Block.hpp"
 
-#include <vector>
+#include "impl/ChunkedBlockStorage.hpp"
+
 #include <iosfwd>
 
 namespace ibp
@@ -16,7 +17,7 @@ namespace impl { class InstanceImpl; }
 class IBP_API Frame
 {
     friend class impl::InstanceImpl;
-    std::vector<Block> m_blocks;
+    impl::ChunkedBlockStorage<Block> m_blocks;
 public:
     void dump(std::ostream& out);
 };

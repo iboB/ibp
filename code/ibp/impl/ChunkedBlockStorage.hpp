@@ -80,12 +80,12 @@ public:
     {
         free();
         take(other);
-        return this;
+        return *this;
     }
 
     T& emplace_back()
     {
-        if (m_end == m_capEnd) 
+        if (m_end == m_capEnd)
         {
             auto nc = newChunk();
             m_back->next = nc;
@@ -94,7 +94,7 @@ public:
         return *m_end++;
     }
 
-    class ConstIterator 
+    class ConstIterator
     {
     public:
         T* p;
@@ -104,7 +104,7 @@ public:
         ConstIterator& operator++()
         {
             ++p;
-            if (c && p == c->buf() + csize) 
+            if (c && p == c->buf() + csize)
             {
                 c = c->next;
                 if (c)
@@ -117,7 +117,7 @@ public:
         const T& operator*() const { return *p; }
         const T* operator->() const { return p; }
 
-        bool operator==(const ConstIterator& other) const 
+        bool operator==(const ConstIterator& other) const
         {
             return p == other.p;
         }
@@ -127,7 +127,7 @@ public:
         }
     };
 
-    ConstIterator begin() const 
+    ConstIterator begin() const
     {
         return {m_front->buf(), m_chunkSize, m_front};
     }
