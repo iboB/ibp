@@ -25,11 +25,11 @@ public:
         m_curFrame = &frame;
     }
 
-    void beginBlock(BlockDesc& desc)
+    void beginBlock(const BlockDesc& desc)
     {
         if (!m_curFrame) return;
         auto& b = m_stack.emplace_back();
-        b.desc = desc;
+        b.desc = &desc;
         b.nsStart = clock::now().time_since_epoch().count();
     }
 
@@ -48,7 +48,7 @@ InstanceImpl i;
 }
 
 void Instance::beginFrame(Frame& frame) { impl::i.beginFrame(frame); }
-void Instance::beginBlock(BlockDesc& desc) { impl::i.beginBlock(desc); }
+void Instance::beginBlock(const BlockDesc& desc) { impl::i.beginBlock(desc); }
 void Instance::endTopBlock() { impl::i.endTopBlock(); }
 
 }

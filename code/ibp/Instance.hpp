@@ -15,7 +15,7 @@ class IBP_API Instance
 public:
     static void beginFrame(Frame& frame);
 
-    static void beginBlock(BlockDesc& desc);
+    static void beginBlock(const BlockDesc& desc);
     static void endTopBlock();
 };
 

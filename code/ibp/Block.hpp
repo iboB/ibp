@@ -11,7 +11,7 @@ namespace ibp
 
 struct Block
 {
-    BlockDesc desc;
+    const BlockDesc* desc;
     uint64_t nsStart;
     uint64_t nsEnd;
 };
