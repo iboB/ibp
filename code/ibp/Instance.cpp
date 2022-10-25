@@ -5,11 +5,15 @@
 #include "Frame.hpp"
 
 #include <vector>
+#include <chrono>
 
 namespace ibp
 {
 namespace impl
 {
+
+using clock = std::chrono::steady_clock;
+
 class InstanceImpl
 {
 public:
@@ -26,14 +30,14 @@ public:
         if (!m_curFrame) return;
         auto& b = m_stack.emplace_back();
         b.desc = desc;
-        b.start = std::chrono::steady_clock::now();
+        b.nsStart = clock::now().time_since_epoch().count();
     }
 
     void endTopBlock()
     {
         if (!m_curFrame) return;
         auto& b = m_stack.back();
-        b.end = std::chrono::steady_clock::now();
+        b.nsEnd = clock::now().time_since_epoch().count();;
         m_curFrame->m_blocks.push_back(std::move(b));
         m_stack.pop_back();
     }

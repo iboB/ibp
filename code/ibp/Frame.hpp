@@ -21,5 +21,4 @@ public:
     void dump(std::ostream& out);
 };
 
-
 }

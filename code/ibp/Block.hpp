@@ -3,7 +3,8 @@
 //
 #pragma once
 #include "BlockDesc.hpp"
-#include <chrono>
+
+#include <cstdint>
 
 namespace ibp
 {
@@ -11,8 +12,8 @@ namespace ibp
 struct Block
 {
     BlockDesc desc;
-    std::chrono::steady_clock::time_point start;
-    std::chrono::steady_clock::time_point end;
+    uint64_t nsStart;
+    uint64_t nsEnd;
 };
 
 }
