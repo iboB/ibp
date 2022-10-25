@@ -3,7 +3,7 @@
 //
 #pragma once
 #include "BlockDesc.hpp"
-#include "Sentry.hpp"
+#include "BlockSentry.hpp"
 
 #define I_IBP_PP_CAT(a, b) I_IBP_PP_INTERNAL_CAT(a, b)
 #define I_IBP_PP_INTERNAL_CAT(a, b) a##b
@@ -14,7 +14,7 @@
 
 #define IBPROFILE_SCOPE(label) \
     I_IBPROFILE_BLOCK_DESC(label); \
-    ::ibp::Sentry I_IBPROFILE_U_NAME(_ibp_profileSentry)(I_IBPROFILE_U_NAME(_ibp_blockDesc))
+    ::ibp::BlockSentry I_IBPROFILE_U_NAME(_ibp_profileSentry)(I_IBPROFILE_U_NAME(_ibp_blockDesc))
 
 #define IBPROFILE_FUNC() IBPROFILE_SCOPE(__func__)
 

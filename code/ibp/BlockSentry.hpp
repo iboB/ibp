@@ -7,14 +7,14 @@
 namespace ibp
 {
 
-struct Sentry
+struct BlockSentry
 {
 public:
-    Sentry(BlockDesc& desc)
+    BlockSentry(BlockDesc& desc)
     {
         Instance::beginBlock(desc);
     }
-    ~Sentry()
+    ~BlockSentry()
     {
         Instance::endTopBlock();
     }
