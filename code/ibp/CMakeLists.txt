@@ -14,7 +14,7 @@ target_sources(ibp PRIVATE
     Frame.cpp
     FrameSentry.hpp
     ProfileImpl.cpp
-)
+ "BlockDesc.cpp")
 
 target_include_directories(ibp INTERFACE ..)
 
@@ -22,5 +22,7 @@ target_link_libraries(ibp
     PUBLIC
         splat::splat
         itlib::itlib
+    PRIVATE
+        ibp::xxhash
 )
 

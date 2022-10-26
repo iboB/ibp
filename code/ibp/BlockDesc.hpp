@@ -2,16 +2,17 @@
 // SPDX-License-Identifier: MIT
 //
 #pragma once
+#include "API.h"
+
+#include <string_view>
 
 namespace ibp
 {
-
-class BlockDesc
+class IBP_API BlockDesc
 {
 public:
-    BlockDesc() = default;
-    BlockDesc(const char* l) : label(l) {}
-    const char* label;
+    BlockDesc(const char* l);
+    std::string_view label;
+    uint64_t hash;
 };
-
 }
