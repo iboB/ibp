@@ -1,4 +1,5 @@
 #include "Frame.hpp"
+#include "BlockDesc.hpp"
 
 #include <ostream>
 #include <algorithm>

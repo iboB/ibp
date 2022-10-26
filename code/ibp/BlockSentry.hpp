@@ -2,21 +2,29 @@
 // SPDX-License-Identifier: MIT
 //
 #pragma once
-#include "Instance.hpp"
+#include "API.h"
 
 namespace ibp
 {
+class BlockDesc;
 
-struct BlockSentry
+namespace profile
+{
+// implemented in ProfileImpl.cpp
+IBP_API void beginBlock(const BlockDesc& desc);
+IBP_API void endTopBlock();
+}
+
+class BlockSentry
 {
 public:
     BlockSentry(BlockDesc& desc)
     {
-        Instance::beginBlock(desc);
+        profile::beginBlock(desc);
     }
     ~BlockSentry()
     {
-        Instance::endTopBlock();
+        profile::endTopBlock();
     }
 };
 

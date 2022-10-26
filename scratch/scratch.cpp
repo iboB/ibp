@@ -3,6 +3,7 @@
 //
 #include <ibp/Profile.hpp>
 #include <ibp/Frame.hpp>
+#include <ibp/FrameSentry.hpp>
 
 #include <iostream>
 #include <thread>
@@ -25,9 +26,11 @@ void foo(int i) {
 
 int main() {
     ibp::Frame frame;
-    ibp::Instance::beginFrame(frame);
-    for (int i = 0; i < 3; ++i) {
-        foo(i + 1);
+    {
+        ibp::FrameSentry f(frame);
+        for (int i = 0; i < 3; ++i) {
+            foo(i + 1);
+        }
     }
     frame.dump(std::cout);
     return 0;

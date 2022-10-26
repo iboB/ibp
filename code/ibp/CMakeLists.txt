@@ -9,12 +9,12 @@ target_sources(ibp PRIVATE
     Block.hpp
     BlockDesc.hpp
     BlockSentry.hpp
-    Instance.hpp
-    Instance.cpp
     Profile.hpp
     Frame.hpp
     Frame.cpp
- )
+    FrameSentry.hpp
+    ProfileImpl.cpp
+)
 
 target_include_directories(ibp INTERFACE ..)
 

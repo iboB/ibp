@@ -20,6 +20,6 @@
 
 #define IBPROFILE_BLOCK_BEGIN(label) \
     I_IBPROFILE_BLOCK_DESC(label); \
-    ::ibp::Instance::beginBlock(I_IBPROFILE_U_NAME(_ibp_blockDesc))
+    ::ibp::profile::beginBlock(I_IBPROFILE_U_NAME(_ibp_blockDesc))
 
-#define IBPROFILE_BLOCK_END() ::ibp::Instance::endTopBlock()
+#define IBPROFILE_BLOCK_END() ::ibp::profile::endTopBlock()

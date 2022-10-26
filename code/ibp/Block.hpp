@@ -2,13 +2,11 @@
 // SPDX-License-Identifier: MIT
 //
 #pragma once
-#include "BlockDesc.hpp"
-
 #include <cstdint>
 
 namespace ibp
 {
-
+class BlockDesc;
 struct Block
 {
     const BlockDesc* desc;
