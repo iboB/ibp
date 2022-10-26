@@ -29,9 +29,13 @@ class ChunkedBlockStorage
     {
         auto ret = reinterpret_cast<Chunk*>(new uint8_t[sizeof(Chunk) + m_chunkSize * sizeof(T)]);
         ret->next = nullptr;
-        m_end = ret->buf();
-        m_capEnd = m_end + m_chunkSize;
         return ret;
+    }
+
+    void resetEndFromBack()
+    {
+        m_end = m_back->buf();
+        m_capEnd = m_end + m_chunkSize;
     }
 
     void free()
@@ -66,6 +70,7 @@ public:
     void init()
     {
         m_front = m_back = newChunk();
+        resetEndFromBack();
     }
 
     bool valid() const
@@ -96,11 +101,25 @@ public:
     {
         if (m_end == m_capEnd)
         {
-            auto nc = newChunk();
-            m_back->next = nc;
-            m_back = nc;
+            if (m_back->next)
+            {
+                m_back = m_back->next;
+            }
+            else
+            {
+                auto nc = newChunk();
+                m_back->next = nc;
+                m_back = nc;
+            }
+            resetEndFromBack();
         }
         return *m_end++;
+    }
+
+    void reset()
+    {
+        m_back = m_front;
+        resetEndFromBack();
     }
 
     class ConstIterator

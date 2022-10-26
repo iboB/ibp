@@ -8,19 +8,25 @@
 
 using ibp::impl::ChunkedBlockStorage;
 
-TEST_CASE("basic")
+TEST_CASE("test")
 {
     ChunkedBlockStorage<int> c(2);
-    CHECK_FALSE(c.valid());
+    CHECK_FALSE(c.valid()); // not valid by default
     c.init();
-    CHECK(c.valid());
+    CHECK(c.valid()); // valid after initialize
+
+    using ivec = std::vector<int>;
+    ivec val;
+    for (auto& i : c)
+    {
+        val.push_back(i);
+    }
+    CHECK(val.empty()); // empty after init
 
     c.emplace_back() = 1;
     c.emplace_back() = 2;
 
     std::vector<const int*> addr;
-    using ivec = std::vector<int>;
-    ivec val;
 
     for (auto& i : c)
     {
@@ -28,8 +34,8 @@ TEST_CASE("basic")
         val.push_back(i);
     }
 
-    CHECK(val == ivec{1, 2});
-    CHECK(addr[0] + 1 == addr[1]);
+    CHECK(val == ivec{1, 2}); // contents
+    CHECK(addr[0] + 1 == addr[1]); // consecutive addresses
 
     c.emplace_back() = 3;
     c.emplace_back() = 4;
@@ -43,10 +49,57 @@ TEST_CASE("basic")
         val.push_back(i);
     }
 
-    CHECK(val == ivec{1, 2, 3, 4, 5});
-    CHECK(addr[0] == addr2[0]);
+    CHECK(val == ivec{1, 2, 3, 4, 5}); // contents
+    CHECK(addr[0] == addr2[0]); // first two addresses unchanged
     CHECK(addr[1] == addr2[1]);
-    CHECK(addr2[1] + 1 != addr2[2]);
-    CHECK(addr2[2] + 1 == addr2[3]);
-    CHECK(addr2[3] + 1 != addr2[4]);
+    CHECK(addr2[1] + 1 != addr2[2]); // second pair is not after first
+    CHECK(addr2[2] + 1 == addr2[3]); // second pair is consecutive
+    CHECK(addr2[3] + 1 != addr2[4]); // third pair is not after second
+
+    c.reset();
+    CHECK(c.valid()); // valid after reset
+
+    val.clear();
+    for (auto& i : c)
+    {
+        val.push_back(i);
+    }
+    CHECK(val.empty()); // empty after reset
+
+    c.emplace_back() = 10;
+    c.emplace_back() = 20;
+    c.emplace_back() = 30;
+    c.emplace_back() = 40;
+    c.emplace_back() = 50;
+
+    addr.clear();
+    val.clear();
+    for (auto& i : c)
+    {
+        addr.push_back(&i);
+        val.push_back(i);
+    }
+
+    CHECK(val == ivec{10, 20, 30, 40, 50}); // contents
+    CHECK(addr == addr2); // addresses preserved
+
+    auto c2 = std::move(c);
+    CHECK_FALSE(c.valid()); // not valid after move
+    CHECK(c2.valid());
+
+    addr.clear();
+    val.clear();
+    for (auto& i : c2)
+    {
+        addr.push_back(&i);
+        val.push_back(i);
+    }
+
+    CHECK(val == ivec{10, 20, 30, 40, 50}); // contents
+    CHECK(addr == addr2); // addresses preserved
+
+    c2.reset();
+
+    auto c3 = std::move(c2);
+    CHECK(c3.valid());
 }
