@@ -14,6 +14,7 @@ TEST_CASE("test")
     CHECK_FALSE(c.valid()); // not valid by default
     c.init();
     CHECK(c.valid()); // valid after initialize
+    CHECK(c.empty()); // empty
 
     using ivec = std::vector<int>;
     ivec val;
@@ -25,6 +26,7 @@ TEST_CASE("test")
 
     c.emplace_back() = 1;
     c.emplace_back() = 2;
+    CHECK_FALSE(c.empty()); // not empty
 
     std::vector<const int*> addr;
 
@@ -58,6 +60,7 @@ TEST_CASE("test")
 
     c.reset();
     CHECK(c.valid()); // valid after reset
+    CHECK(c.empty());
 
     val.clear();
     for (auto& i : c)
@@ -102,4 +105,22 @@ TEST_CASE("test")
 
     auto c3 = std::move(c2);
     CHECK(c3.valid());
+    CHECK(c3.empty());
+
+    c3.emplace_back() = 6;
+    c3.emplace_back() = 7;
+    c3.emplace_back() = 8;
+    c3.emplace_back() = 9;
+    c3.emplace_back() = 10;
+
+    addr.clear();
+    val.clear();
+    for (auto& i : c3)
+    {
+        addr.push_back(&i);
+        val.push_back(i);
+    }
+
+    CHECK(val == ivec{6, 7, 8, 9, 10}); // contents
+    CHECK(addr == addr2); // addresses preserved
 }

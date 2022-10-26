@@ -78,6 +78,11 @@ public:
         return !!m_front;
     }
 
+    bool empty()
+    {
+        return m_end == m_front->buf();
+    }
+
     ~ChunkedBlockStorage()
     {
         free();
