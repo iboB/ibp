@@ -19,32 +19,68 @@ public:
 
     void beginFrame(Frame& f)
     {
-        frame = &f;
-        if (!f.m_blocks.valid())
+        if (frame == &f)
         {
-            f.m_blocks.init();
-            f.m_stack.reserve(16);
+            // reentering frame
+            assert(frame->m_timesEntered > 0);
+            ++frame->m_timesEntered;
         }
+        else
+        {
+            // these assertions might also be triggered
+            // if there's a bug and the same frame is concurrently entered from two different threads
+            // in such a case there would be also a race here
+            // such functionality is of course not supported
+            assert(f.m_timesEntered == 0);
+            assert(!f.m_prevFrame);
+            assert(f.m_stack.empty());
+            f.m_prevFrame = frame;
+
+            // init frame in case it's the first time it has been entered
+            if (!f.m_blocks.valid())
+            {
+                f.m_blocks.init();
+                f.m_stack.reserve(16);
+            }
+        }
+
+        frame = &f;
     }
 
     void endTopFrame()
     {
-        frame = nullptr;
+        assert(frame);
+
+        if (frame->m_timesEntered > 1)
+        {
+            --frame->m_timesEntered;
+            return; // nothing more to do
+        }
+
+        assert(frame->m_timesEntered == 1);
+        assert(frame->m_stack.empty()); // cannot leave with a non-empty stack
+
+        // restore previous (if any)
+        frame = frame->m_prevFrame;
+
+        // clear
+        frame->m_timesEntered = 0;
+        frame->m_prevFrame = nullptr;
     }
 
     void beginBlock(const BlockDesc& desc)
     {
-        if (!frame) return;
+        if (!frame) return; // safe - no frame
         auto& b = frame->m_blocks.emplace_back();
         b.desc = &desc;
         frame->m_stack.push_back(&b);
-        b.nsStart = clock::now().time_since_epoch().count();
+        b.nsStart = clock::now().time_since_epoch().count(); // start time at the last possible moment
     }
 
     void endTopBlock()
     {
-        if (!frame) return;
-        auto end = clock::now();
+        if (!frame) return; // safe - no frame
+        auto end = clock::now(); // end time at the first possible moment
         frame->m_stack.back()->nsEnd = end.time_since_epoch().count();
         frame->m_stack.pop_back();
     }
