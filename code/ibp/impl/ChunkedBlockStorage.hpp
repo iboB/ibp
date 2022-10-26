@@ -19,10 +19,10 @@ class ChunkedBlockStorage
         T* buf() { return reinterpret_cast<T*>(reinterpret_cast<uint8_t*>(this) + sizeof(Chunk)); }
     };
     static_assert(sizeof(Chunk) % std::alignment_of_v<std::max_align_t> == 0);
-    Chunk* m_front;
-    Chunk* m_back;
-    T* m_end; // in last chunk
-    T* m_capEnd; // capacity end in last chunk
+    Chunk* m_front = nullptr;
+    Chunk* m_back = nullptr;
+    T* m_end = nullptr; // in last chunk
+    T* m_capEnd = nullptr; // capacity end in last chunk
     uint32_t m_chunkSize; // number of T elements in a chunk (capacity)
 
     Chunk* newChunk()
@@ -61,7 +61,16 @@ public:
     explicit ChunkedBlockStorage(uint32_t chunkSize = 128)
         : m_chunkSize(chunkSize)
     {
+    }
+
+    void init()
+    {
         m_front = m_back = newChunk();
+    }
+
+    bool valid() const
+    {
+        return !!m_front;
     }
 
     ~ChunkedBlockStorage()

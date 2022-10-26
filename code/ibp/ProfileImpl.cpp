@@ -3,6 +3,7 @@
 #include "Frame.hpp"
 
 #include <chrono>
+#include <cassert>
 
 namespace ibp
 {
@@ -19,6 +20,11 @@ public:
     void beginFrame(Frame& f)
     {
         frame = &f;
+        if (!f.m_blocks.valid())
+        {
+            f.m_blocks.init();
+            f.m_stack.reserve(16);
+        }
     }
 
     void endTopFrame()

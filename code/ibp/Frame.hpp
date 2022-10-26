@@ -8,7 +8,7 @@
 
 #include "impl/ChunkedBlockStorage.hpp"
 
-#include <itlib/small_vector.hpp>
+#include <itlib/pod_vector.hpp>
 #include <iosfwd>
 
 namespace ibp
@@ -19,7 +19,7 @@ class IBP_API Frame
 {
     friend class impl::ThreadProfile;
     impl::ChunkedBlockStorage<Block> m_blocks;
-    itlib::small_vector<Block*, 16> m_stack;
+    itlib::pod_vector<Block*> m_stack;
 public:
     void dump(std::ostream& out);
 };

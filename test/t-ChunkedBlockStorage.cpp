@@ -11,6 +11,10 @@ using ibp::impl::ChunkedBlockStorage;
 TEST_CASE("basic")
 {
     ChunkedBlockStorage<int> c(2);
+    CHECK_FALSE(c.valid());
+    c.init();
+    CHECK(c.valid());
+
     c.emplace_back() = 1;
     c.emplace_back() = 2;
 
