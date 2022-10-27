@@ -4,7 +4,6 @@
 #pragma once
 #include "API.h"
 
-#include "Block.hpp"
 #include "BlockDesc.hpp"
 
 #include "impl/ChunkedBlockStorage.hpp"
@@ -22,6 +21,12 @@ class IBP_API Frame
     friend class impl::ThreadProfile;
 
     // raw profile data
+    struct Block
+    {
+        const BlockDesc* desc;
+        uint64_t nsStart;
+        uint64_t nsEnd;
+    };
     impl::ChunkedBlockStorage<Block> m_blocks; // blocks in a "linear" tree
     itlib::pod_vector<Block*> m_stack; // stack while the frame is active
 
