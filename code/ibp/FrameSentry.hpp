@@ -11,9 +11,19 @@ class Frame;
 // implemented in ProfileImpl.cpp
 class IBP_API FrameSentry
 {
+    bool m_frameStarted;
 public:
     FrameSentry(Frame& desc);
     ~FrameSentry();
+
+    FrameSentry(const FrameSentry&) = delete;
+    FrameSentry& operator=(const FrameSentry&) = delete;
+    FrameSentry(FrameSentry&& other) noexcept
+        : m_frameStarted(other.m_frameStarted)
+    {
+        other.m_frameStarted = false;
+    }
+    FrameSentry& operator=(FrameSentry&&) noexcept = delete;
 };
 
 }

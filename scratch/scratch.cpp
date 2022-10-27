@@ -26,9 +26,11 @@ void foo(int i) {
 
 int main() {
     ibp::Frame frame("main");
+    frame.setActive();
     {
         ibp::FrameSentry f(frame);
         for (int i = 0; i < 3; ++i) {
+            ibp::FrameSentry f(frame);
             foo(i + 1);
         }
     }

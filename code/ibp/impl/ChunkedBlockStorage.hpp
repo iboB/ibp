@@ -80,7 +80,7 @@ public:
 
     bool empty()
     {
-        return m_end == m_front->buf();
+        return !m_front || m_end == m_front->buf();
     }
 
     ~ChunkedBlockStorage()
@@ -162,7 +162,8 @@ public:
 
     ConstIterator begin() const
     {
-        return {m_front->buf(), m_chunkSize, m_front};
+        T* pbegin = m_front ? m_front->buf() : nullptr;
+        return {pbegin, m_chunkSize, m_front};
     }
 
     ConstIterator end() const

@@ -35,12 +35,16 @@ class IBP_API Frame
     // we support beginning a frame inside of another
     Frame* m_prevFrame = nullptr; // restore this when leaving
     int m_timesEntered = 0; // how many times begin frame has been called for this frame
+    bool m_active = false;
 
     // frame desc
     std::string m_name;
     BlockDesc m_blockDesc;
 public:
     Frame(std::string_view name);
+
+    bool active() const { return m_active; }
+    void setActive(bool b = true) { m_active = b; }
 
     void dump(std::ostream& out);
 };

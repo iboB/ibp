@@ -26,6 +26,11 @@ public:
     {
         profile::endTopBlock();
     }
+
+    BlockSentry(const BlockSentry&) = delete;
+    BlockSentry& operator=(const BlockSentry&) = delete;
+    BlockSentry(BlockSentry&&) = delete;
+    BlockSentry& operator=(BlockSentry&&) = delete;
 };
 
 }

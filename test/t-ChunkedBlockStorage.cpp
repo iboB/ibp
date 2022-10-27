@@ -12,17 +12,26 @@ TEST_CASE("test")
 {
     ChunkedBlockStorage<int> c(2);
     CHECK_FALSE(c.valid()); // not valid by default
-    c.init();
-    CHECK(c.valid()); // valid after initialize
-    CHECK(c.empty()); // empty
+    CHECK(c.empty()); // empty on ivalid is safe
 
+    // iterate invalid is safe (and empty)
     using ivec = std::vector<int>;
     ivec val;
     for (auto& i : c)
     {
         val.push_back(i);
     }
-    CHECK(val.empty()); // empty after init
+    CHECK(val.empty());
+
+    c.init();
+    CHECK(c.valid()); // valid after initialize
+    CHECK(c.empty()); // still empty
+
+    for (auto& i : c)
+    {
+        val.push_back(i);
+    }
+    CHECK(val.empty()); // still empty after init
 
     c.emplace_back() = 1;
     c.emplace_back() = 2;
@@ -88,6 +97,7 @@ TEST_CASE("test")
 
     auto c2 = std::move(c);
     CHECK_FALSE(c.valid()); // not valid after move
+    CHECK(c.empty());
     CHECK(c2.valid());
 
     addr.clear();

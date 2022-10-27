@@ -101,7 +101,16 @@ void beginBlock(const BlockDesc& desc) { thread.beginBlock(desc); }
 void endTopBlock() { thread.endTopBlock(); }
 }
 
-FrameSentry::FrameSentry(Frame& f) { thread.beginFrame(f); }
-FrameSentry::~FrameSentry() { thread.endTopFrame(); }
+FrameSentry::FrameSentry(Frame& f)
+    : m_frameStarted(f.active())
+{
+    if (m_frameStarted) thread.beginFrame(f);
+}
+
+FrameSentry::~FrameSentry()
+{
+    if (!m_frameStarted) return;
+    thread.endTopFrame();
+}
 
 }
