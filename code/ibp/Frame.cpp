@@ -7,6 +7,11 @@
 namespace ibp
 {
 
+Frame::Frame(std::string_view name)
+    : m_name(name)
+    , m_blockDesc(m_name.c_str())
+{}
+
 void Frame::dump(std::ostream& out)
 {
     for (auto& b : m_blocks)

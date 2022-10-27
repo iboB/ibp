@@ -5,11 +5,13 @@
 #include "API.h"
 
 #include "Block.hpp"
+#include "BlockDesc.hpp"
 
 #include "impl/ChunkedBlockStorage.hpp"
 
 #include <itlib/pod_vector.hpp>
 #include <iosfwd>
+#include <string>
 
 namespace ibp
 {
@@ -28,7 +30,13 @@ class IBP_API Frame
     // we support beginning a frame inside of another
     Frame* m_prevFrame = nullptr; // restore this when leaving
     int m_timesEntered = 0; // how many times begin frame has been called for this frame
+
+    // frame desc
+    std::string m_name;
+    BlockDesc m_blockDesc;
 public:
+    Frame(std::string_view name);
+
     void dump(std::ostream& out);
 };
 

@@ -24,27 +24,28 @@ public:
             // reentering frame
             assert(frame->m_timesEntered > 0);
             ++frame->m_timesEntered;
+            return;
         }
-        else
-        {
-            // these assertions might also be triggered
-            // if there's a bug and the same frame is concurrently entered from two different threads
-            // in such a case there would be also a race here
-            // such functionality is of course not supported
-            assert(f.m_timesEntered == 0);
-            assert(!f.m_prevFrame);
-            assert(f.m_stack.empty());
-            f.m_prevFrame = frame;
 
-            // init frame in case it's the first time it has been entered
-            if (!f.m_blocks.valid())
-            {
-                f.m_blocks.init();
-                f.m_stack.reserve(16);
-            }
+        // these assertions might also be triggered
+        // if there's a bug and the same frame is concurrently entered from two different threads
+        // in such a case there would be also a race here
+        // such functionality is of course not supported
+        assert(f.m_timesEntered == 0);
+        f.m_timesEntered = 1;
+        assert(!f.m_prevFrame);
+        f.m_prevFrame = frame;
+        assert(f.m_stack.empty());
+
+        // init frame in case it's the first time it has been entered
+        if (!f.m_blocks.valid())
+        {
+            f.m_blocks.init();
+            f.m_stack.reserve(16);
         }
 
         frame = &f;
+        beginBlock(frame->m_blockDesc);
     }
 
     void endTopFrame()
@@ -57,15 +58,19 @@ public:
             return; // nothing more to do
         }
 
+        endTopBlock();
+
         assert(frame->m_timesEntered == 1);
         assert(frame->m_stack.empty()); // cannot leave with a non-empty stack
 
-        // restore previous (if any)
-        frame = frame->m_prevFrame;
+        auto prev = frame->m_prevFrame;
 
         // clear
         frame->m_timesEntered = 0;
         frame->m_prevFrame = nullptr;
+
+        // restore previous (if any)
+        frame = prev;
     }
 
     void beginBlock(const BlockDesc& desc)

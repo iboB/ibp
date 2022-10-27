@@ -25,7 +25,7 @@ void foo(int i) {
 }
 
 int main() {
-    ibp::Frame frame;
+    ibp::Frame frame("main");
     {
         ibp::FrameSentry f(frame);
         for (int i = 0; i < 3; ++i) {
