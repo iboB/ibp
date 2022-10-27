@@ -4,6 +4,7 @@
 #pragma once
 #include <type_traits>
 #include <cstdint>
+#include <cstddef>
 
 namespace ibp::impl
 {
@@ -12,13 +13,20 @@ template <typename T>
 class ChunkedBlockStorage
 {
     static_assert(std::is_trivial_v<T>);
-    static_assert(std::alignment_of_v<T> <= std::alignment_of_v<std::max_align_t>);
+    static_assert(alignof(T) <= alignof(std::max_align_t));
     struct Chunk
     {
-        Chunk* next;
+    	union {
+        	Chunk* next;
+
+        	// we add this so as to guarantee that the alignment of the buffer
+        	// after the chunk matches max_align_t
+        	std::max_align_t pad;
+        };
+        
         T* buf() { return reinterpret_cast<T*>(reinterpret_cast<uint8_t*>(this) + sizeof(Chunk)); }
     };
-    static_assert(sizeof(Chunk) % std::alignment_of_v<std::max_align_t> == 0);
+    static_assert(sizeof(Chunk) % alignof(std::max_align_t) == 0);
     Chunk* m_front = nullptr;
     Chunk* m_back = nullptr;
     T* m_end = nullptr; // in last chunk
