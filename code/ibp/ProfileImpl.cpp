@@ -85,7 +85,9 @@ public:
     void endTopBlock()
     {
         if (!frame) return; // safe - no frame
-        auto end = clock::now(); // end time at the first possible moment
+        // end time at the first possible moment...
+        auto end = clock::now();
+        // ... thus potential cache misses in the code below won't affect it
         frame->m_stack.back()->nsEnd = end.time_since_epoch().count();
         frame->m_stack.pop_back();
     }
