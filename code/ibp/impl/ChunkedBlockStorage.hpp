@@ -70,7 +70,7 @@ class ChunkedBlockStorage
         m_chunkSize = other.m_chunkSize;
     }
 public:
-    explicit ChunkedBlockStorage(uint32_t chunkSize = 128)
+    explicit ChunkedBlockStorage(uint32_t chunkSize)
         : m_chunkSize(chunkSize)
     {
     }

@@ -35,13 +35,11 @@ public:
         f.m_timesEntered = 1;
         assert(!f.m_prevFrame);
         f.m_prevFrame = frame;
-        assert(f.m_stack.empty());
 
         // init frame in case it's the first time it has been entered
-        if (!f.m_blocks.valid())
+        if (!f.m_events.valid())
         {
-            f.m_blocks.init();
-            f.m_stack.reserve(16);
+            f.m_events.init();
         }
 
         frame = &f;
@@ -61,7 +59,6 @@ public:
         endTopBlock();
 
         assert(frame->m_timesEntered == 1);
-        assert(frame->m_stack.empty()); // cannot leave with a non-empty stack
 
         auto prev = frame->m_prevFrame;
 
@@ -76,10 +73,9 @@ public:
     void beginBlock(const BlockDesc& desc)
     {
         if (!frame) return; // safe - no frame
-        auto& b = frame->m_blocks.emplace_back();
+        auto& b = frame->m_events.emplace_back();
         b.desc = &desc;
-        frame->m_stack.push_back(&b);
-        b.nsStart = clock::now().time_since_epoch().count(); // start time at the last possible moment
+        b.nsTimestamp = clock::now().time_since_epoch().count(); // start time at the last possible moment
     }
 
     void endTopBlock()
@@ -88,8 +84,9 @@ public:
         // end time at the first possible moment...
         auto end = clock::now();
         // ... thus potential cache misses in the code below won't affect it
-        frame->m_stack.back()->nsEnd = end.time_since_epoch().count();
-        frame->m_stack.pop_back();
+        auto& e = frame->m_events.emplace_back();
+        e.desc = nullptr;
+        e.nsTimestamp = end.time_since_epoch().count();
     }
 };
 

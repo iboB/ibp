@@ -21,14 +21,12 @@ class IBP_API Frame
     friend class impl::ThreadProfile;
 
     // raw profile data
-    struct Block
+    struct Event
     {
         const BlockDesc* desc;
-        uint64_t nsStart;
-        uint64_t nsEnd;
+        uint64_t nsTimestamp;
     };
-    impl::ChunkedBlockStorage<Block> m_blocks; // blocks in a "linear" tree
-    itlib::pod_vector<Block*> m_stack; // stack while the frame is active
+    impl::ChunkedBlockStorage<Event> m_events;
 
     // activation logic
     // we support reentrant begin frame
