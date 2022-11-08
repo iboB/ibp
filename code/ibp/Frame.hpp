@@ -4,7 +4,7 @@
 #pragma once
 #include "API.h"
 
-#include "BlockDesc.hpp"
+#include "EventDesc.hpp"
 
 #include "impl/ChunkedBlockStorage.hpp"
 
@@ -23,7 +23,7 @@ class IBP_API Frame
     // raw profile data
     struct Event
     {
-        const BlockDesc* desc;
+        const EventDesc* desc;
         uint64_t nsTimestamp;
     };
     impl::ChunkedBlockStorage<Event> m_events;
@@ -37,13 +37,16 @@ class IBP_API Frame
 
     // frame desc
     std::string m_name;
-    BlockDesc m_blockDesc;
+    EventDesc m_eventDesc;
 public:
     Frame(std::string_view name);
 
+    // active only affects the frame sentry
+    // you cannot deactivate the frame while it's set as current
     bool active() const { return m_active; }
     void setActive(bool b = true) { m_active = b; }
 
+    // temp
     void dump(std::ostream& out);
 };
 

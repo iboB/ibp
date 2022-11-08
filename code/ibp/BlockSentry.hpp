@@ -6,19 +6,19 @@
 
 namespace ibp
 {
-class BlockDesc;
+class EventDesc;
 
 namespace profile
 {
 // implemented in ProfileImpl.cpp
-IBP_API void beginBlock(const BlockDesc& desc);
+IBP_API void beginBlock(const EventDesc& desc);
 IBP_API void endTopBlock();
 }
 
 class BlockSentry
 {
 public:
-    BlockSentry(BlockDesc& desc)
+    BlockSentry(EventDesc& desc)
     {
         profile::beginBlock(desc);
     }

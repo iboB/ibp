@@ -8,10 +8,10 @@
 
 namespace ibp
 {
-class IBP_API BlockDesc
+class IBP_API EventDesc
 {
 public:
-    BlockDesc(const char* l);
+    EventDesc(const char* l);
     std::string_view label;
     uint64_t hash;
 };

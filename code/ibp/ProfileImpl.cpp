@@ -43,7 +43,7 @@ public:
         }
 
         frame = &f;
-        beginBlock(frame->m_blockDesc);
+        beginBlock(frame->m_eventDesc);
     }
 
     void endTopFrame()
@@ -70,7 +70,7 @@ public:
         frame = prev;
     }
 
-    void beginBlock(const BlockDesc& desc)
+    void beginBlock(const EventDesc& desc)
     {
         if (!frame) return; // safe - no frame
         auto& b = frame->m_events.emplace_back();
@@ -96,7 +96,7 @@ static thread_local impl::ThreadProfile thread;
 
 namespace profile
 {
-void beginBlock(const BlockDesc& desc) { thread.beginBlock(desc); }
+void beginBlock(const EventDesc& desc) { thread.beginBlock(desc); }
 void endTopBlock() { thread.endTopBlock(); }
 }
 

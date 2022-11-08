@@ -1,5 +1,5 @@
 #include "Frame.hpp"
-#include "BlockDesc.hpp"
+#include "EventDesc.hpp"
 
 #include <itlib/span.hpp>
 
@@ -13,14 +13,14 @@ namespace ibp
 Frame::Frame(std::string_view name)
     : m_events(256)
     , m_name(name)
-    , m_blockDesc(m_name.c_str())
+    , m_eventDesc(m_name.c_str())
 {}
 
 namespace
 {
 struct ReportBlock {
-    ReportBlock(const BlockDesc& d, uint64_t start) : desc(d), nsStart(start), nsEnd(0) {}
-    const BlockDesc& desc;
+    ReportBlock(const EventDesc& d, uint64_t start) : desc(d), nsStart(start), nsEnd(0) {}
+    const EventDesc& desc;
     uint64_t nsStart;
     uint64_t nsEnd;
     std::vector<ReportBlock> children;

@@ -6,14 +6,14 @@ add_library(ibp::ibp ALIAS ibp)
 target_sources(ibp PRIVATE
     impl/ChunkedBlockStorage.hpp
     API.h
-    BlockDesc.hpp
+    EventDesc.hpp
+    EventDesc.cpp
     BlockSentry.hpp
     Profile.hpp
     Frame.hpp
     Frame.cpp
     FrameSentry.hpp
     ProfileImpl.cpp
-    BlockDesc.cpp
 )
 
 target_include_directories(ibp INTERFACE ..)

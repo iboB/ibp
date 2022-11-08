@@ -1,4 +1,7 @@
-#include "BlockDesc.hpp"
+// Copyright (c) Borislav Stanimirov
+// SPDX-License-Identifier: MIT
+//
+#include "EventDesc.hpp"
 
 #define XXH_STATIC_LINKING_ONLY
 #define XXH_IMPLEMENTATION
@@ -7,7 +10,7 @@
 namespace ibp
 {
 
-BlockDesc::BlockDesc(const char* l)
+EventDesc::EventDesc(const char* l)
     : label(l)
 {
     XXH64_state_t hstate;
