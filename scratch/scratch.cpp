@@ -14,6 +14,7 @@ void bar() {
     IBPROFILE_BLOCK_BEGIN("block");
     std::this_thread::sleep_for(std::chrono::milliseconds(10));
     IBPROFILE_BLOCK_END();
+    IBPROFILE_EVENT("endbar");
 }
 
 void foo(int i) {
@@ -21,6 +22,9 @@ void foo(int i) {
     std::this_thread::sleep_for(std::chrono::milliseconds(i * 10));
     if (i == 2) {
         bar();
+    }
+    if (i == 1) {
+        IBPROFILE_EVENT("foo 1");
     }
 }
 

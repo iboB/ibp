@@ -1,3 +1,4 @@
+#include "Event.hpp"
 #include "BlockSentry.hpp"
 #include "FrameSentry.hpp"
 #include "Frame.hpp"
@@ -43,7 +44,7 @@ public:
         }
 
         frame = &f;
-        beginBlock(frame->m_eventDesc);
+        newEvent(frame->m_eventDesc);
     }
 
     void endTopFrame()
@@ -56,7 +57,7 @@ public:
             return; // nothing more to do
         }
 
-        endTopBlock();
+        endEvent();
 
         assert(frame->m_timesEntered == 1);
 
@@ -70,7 +71,7 @@ public:
         frame = prev;
     }
 
-    void beginBlock(const EventDesc& desc)
+    void newEvent(const EventDesc& desc)
     {
         if (!frame) return; // safe - no frame
         auto& b = frame->m_events.emplace_back();
@@ -78,7 +79,7 @@ public:
         b.nsTimestamp = clock::now().time_since_epoch().count(); // start time at the last possible moment
     }
 
-    void endTopBlock()
+    void endEvent()
     {
         if (!frame) return; // safe - no frame
         // end time at the first possible moment...
@@ -96,8 +97,9 @@ static thread_local impl::ThreadProfile thread;
 
 namespace profile
 {
-void beginBlock(const EventDesc& desc) { thread.beginBlock(desc); }
-void endTopBlock() { thread.endTopBlock(); }
+void newEvent(const EventDesc& desc) { thread.newEvent(desc); }
+void beginBlock(const EventDesc& desc) { thread.newEvent(desc); }
+void endTopBlock() { thread.endEvent(); }
 }
 
 FrameSentry::FrameSentry(Frame& f)

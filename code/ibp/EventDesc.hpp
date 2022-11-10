@@ -4,15 +4,21 @@
 #pragma once
 #include "API.h"
 
-#include <string_view>
+#include <cstdint>
 
 namespace ibp
 {
 class IBP_API EventDesc
 {
 public:
-    EventDesc(const char* l);
-    std::string_view label;
+    enum class Type : uint8_t
+    {
+        Frame, Function, Block, Event
+    };
+
+    EventDesc(Type t, const char* l);
+    Type type;
+    const char* label;
     uint64_t hash;
 };
 }

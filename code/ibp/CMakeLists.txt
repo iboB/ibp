@@ -9,6 +9,7 @@ target_sources(ibp PRIVATE
     EventDesc.hpp
     EventDesc.cpp
     BlockSentry.hpp
+    Event.hpp
     Profile.hpp
     Frame.hpp
     Frame.cpp
