@@ -21,10 +21,10 @@ class IBP_API Frame
 public:
     Frame(std::string_view name);
 
-    // active only affects the frame sentry
-    // you cannot deactivate the frame while it's set as current
-    bool active() const { return m_active; }
-    void setActive(bool b = true) { m_active = b; }
+    // enable only affects the frame sentry
+    // disabling the frame while it's set as current has no effect
+    bool enabled() const { return m_enabled; }
+    void setEnabled(bool b = true) { m_enabled = b; }
 
     // temp
     void dump(std::ostream& out);
@@ -44,7 +44,7 @@ private:
     // we support beginning a frame inside of another
     Frame* m_prevFrame = nullptr; // restore this when leaving
     int m_timesEntered = 0; // how many times begin frame has been called for this frame
-    bool m_active = false;
+    bool m_enabled = false;
 
     // frame desc
     std::string m_name;

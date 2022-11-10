@@ -13,6 +13,7 @@ class IBP_API FrameSentry
 {
     bool m_frameStarted;
 public:
+    // sets frame as current if frame is enabled
     FrameSentry(Frame& desc);
     ~FrameSentry();
 

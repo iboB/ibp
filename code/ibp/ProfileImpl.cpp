@@ -101,7 +101,7 @@ void endTopBlock() { thread.endTopBlock(); }
 }
 
 FrameSentry::FrameSentry(Frame& f)
-    : m_frameStarted(f.active())
+    : m_frameStarted(f.enabled())
 {
     if (m_frameStarted) thread.beginFrame(f);
 }
