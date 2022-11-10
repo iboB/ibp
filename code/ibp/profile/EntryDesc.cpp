@@ -1,16 +1,16 @@
 // Copyright (c) Borislav Stanimirov
 // SPDX-License-Identifier: MIT
 //
-#include "EventDesc.hpp"
+#include "EntryDesc.hpp"
 
 #define XXH_STATIC_LINKING_ONLY
 #define XXH_IMPLEMENTATION
 #include <xxhash.h>
 
-namespace ibp
+namespace ibp::profile
 {
 
-EventDesc::EventDesc(Type t, const char* l)
+EntryDesc::EntryDesc(Type t, const char* l)
     : label(l)
     , type(t)
 {

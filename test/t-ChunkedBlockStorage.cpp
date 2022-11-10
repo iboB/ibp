@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: MIT
 //
 #include <doctest/doctest.h>
-#include <ibp/impl/ChunkedBlockStorage.hpp>
+#include <ibp/profile/ChunkedBlockStorage.hpp>
 
 #include <vector>
 
-using ibp::impl::ChunkedBlockStorage;
+using ibp::profile::ChunkedBlockStorage;
 
 TEST_CASE("test")
 {

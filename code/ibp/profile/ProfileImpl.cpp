@@ -1,15 +1,12 @@
 #include "Event.hpp"
-#include "BlockSentry.hpp"
+#include "Block.hpp"
 #include "FrameSentry.hpp"
-#include "Frame.hpp"
+#include "../Frame.hpp"
 
 #include <chrono>
 #include <cassert>
 
-namespace ibp
-{
-namespace impl
-{
+namespace ibp::profile {
 
 using clock = std::chrono::steady_clock;
 
@@ -44,7 +41,7 @@ public:
         }
 
         frame = &f;
-        newEvent(frame->m_eventDesc);
+        newEvent(frame->m_profileDesc);
     }
 
     void endTopFrame()
@@ -71,7 +68,7 @@ public:
         frame = prev;
     }
 
-    void newEvent(const EventDesc& desc)
+    void newEvent(const EntryDesc& desc)
     {
         if (!frame) return; // safe - no frame
         auto& b = frame->m_events.emplace_back();
@@ -91,16 +88,11 @@ public:
     }
 };
 
-}
+static thread_local ThreadProfile thread;
 
-static thread_local impl::ThreadProfile thread;
-
-namespace profile
-{
-void newEvent(const EventDesc& desc) { thread.newEvent(desc); }
-void beginBlock(const EventDesc& desc) { thread.newEvent(desc); }
+void newEvent(const EntryDesc& desc) { thread.newEvent(desc); }
+void beginBlock(const EntryDesc& desc) { thread.newEvent(desc); }
 void endTopBlock() { thread.endEvent(); }
-}
 
 FrameSentry::FrameSentry(Frame& f)
     : m_frameStarted(f.enabled())

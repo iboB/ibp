@@ -6,7 +6,7 @@
 #include <cstdint>
 #include <cstddef>
 
-namespace ibp::impl
+namespace ibp::profile
 {
 // storage composed of a singly linked list of chunks
 template <typename T>

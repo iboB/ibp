@@ -4,17 +4,15 @@
 #pragma once
 #include "API.h"
 
-#include "EventDesc.hpp"
+#include "profile/EntryDesc.hpp"
+#include "profile/ChunkedBlockStorage.hpp"
 
-#include "impl/ChunkedBlockStorage.hpp"
-
-#include <itlib/pod_vector.hpp>
 #include <iosfwd>
 #include <string>
 
 namespace ibp
 {
-namespace impl { class ThreadProfile; }
+namespace profile { class ThreadProfile; }
 
 class IBP_API Frame
 {
@@ -29,12 +27,14 @@ public:
     // temp
     void dump(std::ostream& out);
 private:
-    friend class impl::ThreadProfile;
+    std::string m_name;
+
+    friend class profile::ThreadProfile;
 
     // raw profile data
     struct Event
     {
-        const EventDesc* desc; // will be null for block end
+        const profile::EntryDesc* desc; // will be null for block end
         uint64_t nsTimestamp;
 
         struct ExtraData
@@ -44,8 +44,8 @@ private:
         };
         ExtraData* extra; // null if no extra data
     };
-    impl::ChunkedBlockStorage<Event> m_events;
-    impl::ChunkedBlockStorage<Event::ExtraData> m_eventExtraDatas;
+    profile::ChunkedBlockStorage<Event> m_events;
+    profile::ChunkedBlockStorage<Event::ExtraData> m_eventExtraDatas;
 
     // activation logic
     // we support reentrant begin frame
@@ -55,8 +55,7 @@ private:
     bool m_enabled = false;
 
     // frame desc
-    std::string m_name;
-    EventDesc m_eventDesc;
+    profile::EntryDesc m_profileDesc;
 };
 
 }

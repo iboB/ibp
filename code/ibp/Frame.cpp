@@ -1,5 +1,4 @@
 #include "Frame.hpp"
-#include "EventDesc.hpp"
 
 #include <itlib/span.hpp>
 
@@ -11,10 +10,10 @@ namespace ibp
 {
 
 Frame::Frame(std::string_view name)
-    : m_events(256)
+    : m_name(name)
+    , m_events(256)
     , m_eventExtraDatas(256)
-    , m_name(name)
-    , m_eventDesc(EventDesc::Type::Frame, m_name.c_str())
+    , m_profileDesc(profile::EntryDesc::Type::Frame, m_name.c_str())
 {}
 
 namespace
@@ -22,8 +21,8 @@ namespace
 
 struct ReportEntry
 {
-    ReportEntry(const EventDesc& d, uint64_t start) : desc(d), nsStart(start), nsEnd(0) {}
-    const EventDesc& desc;
+    ReportEntry(const profile::EntryDesc& d, uint64_t start) : desc(d), nsStart(start), nsEnd(0) {}
+    const profile::EntryDesc& desc;
     uint64_t nsStart;
     uint64_t nsEnd;
     std::vector<ReportEntry> children;
@@ -31,13 +30,13 @@ struct ReportEntry
 
 void printEntries(std::ostream& out, itlib::span<const ReportEntry> entries, int depth = 0)
 {
-    auto t2s = [](EventDesc::Type t) -> const char* {
+    auto t2s = [](profile::EntryDesc::Type t) -> const char* {
         switch (t)
         {
-        case EventDesc::Type::Frame: return "frame";
-        case EventDesc::Type::Function: return "func";
-        case EventDesc::Type::Block: return "b";
-        case EventDesc::Type::Event: return "e";
+        case profile::EntryDesc::Type::Frame: return "frame";
+        case profile::EntryDesc::Type::Function: return "func";
+        case profile::EntryDesc::Type::Block: return "b";
+        case profile::EntryDesc::Type::Event: return "e";
         }
 
         return "?";
@@ -67,7 +66,7 @@ void Frame::dump(std::ostream& out)
     {
         if (e.desc)
         {
-            if (e.desc->type == EventDesc::Type::Event)
+            if (e.desc->type == profile::EntryDesc::Type::Event)
             {
                 assert(!stack.empty());
                 auto& c = stack.back().children.emplace_back(*e.desc, e.nsTimestamp);

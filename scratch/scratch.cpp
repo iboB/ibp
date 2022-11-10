@@ -3,7 +3,7 @@
 //
 #include <ibp/Profile.hpp>
 #include <ibp/Frame.hpp>
-#include <ibp/FrameSentry.hpp>
+#include <ibp/profile/FrameSentry.hpp>
 
 #include <iostream>
 #include <thread>
@@ -32,9 +32,9 @@ int main() {
     ibp::Frame frame("main");
     frame.setEnabled();
     {
-        ibp::FrameSentry f(frame);
+        ibp::profile::FrameSentry f(frame);
         for (int i = 0; i < 3; ++i) {
-            ibp::FrameSentry f(frame);
+            ibp::profile::FrameSentry f(frame);
             foo(i + 1);
         }
     }

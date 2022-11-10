@@ -2,23 +2,20 @@
 // SPDX-License-Identifier: MIT
 //
 #pragma once
-#include "API.h"
+#include "../API.h"
 
-namespace ibp
+namespace ibp::profile
 {
-class EventDesc;
+class EntryDesc;
 
-namespace profile
-{
 // implemented in ProfileImpl.cpp
-IBP_API void beginBlock(const EventDesc& desc);
+IBP_API void beginBlock(const EntryDesc& desc);
 IBP_API void endTopBlock();
-}
 
 class BlockSentry
 {
 public:
-    BlockSentry(EventDesc& desc)
+    BlockSentry(EntryDesc& desc)
     {
         profile::beginBlock(desc);
     }
