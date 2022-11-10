@@ -18,6 +18,17 @@ namespace impl { class ThreadProfile; }
 
 class IBP_API Frame
 {
+public:
+    Frame(std::string_view name);
+
+    // active only affects the frame sentry
+    // you cannot deactivate the frame while it's set as current
+    bool active() const { return m_active; }
+    void setActive(bool b = true) { m_active = b; }
+
+    // temp
+    void dump(std::ostream& out);
+private:
     friend class impl::ThreadProfile;
 
     // raw profile data
@@ -38,16 +49,6 @@ class IBP_API Frame
     // frame desc
     std::string m_name;
     EventDesc m_eventDesc;
-public:
-    Frame(std::string_view name);
-
-    // active only affects the frame sentry
-    // you cannot deactivate the frame while it's set as current
-    bool active() const { return m_active; }
-    void setActive(bool b = true) { m_active = b; }
-
-    // temp
-    void dump(std::ostream& out);
 };
 
 }
