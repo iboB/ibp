@@ -12,6 +12,7 @@ namespace ibp
 
 Frame::Frame(std::string_view name)
     : m_events(256)
+    , m_eventExtraDatas(256)
     , m_name(name)
     , m_eventDesc(m_name.c_str())
 {}

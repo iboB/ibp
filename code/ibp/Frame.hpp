@@ -34,10 +34,18 @@ private:
     // raw profile data
     struct Event
     {
-        const EventDesc* desc;
+        const EventDesc* desc; // will be null for block end
         uint64_t nsTimestamp;
+
+        struct ExtraData
+        {
+            int64_t num; // if string is not null, this is used as length
+            const char* string;
+        };
+        ExtraData* extra; // null if no extra data
     };
     impl::ChunkedBlockStorage<Event> m_events;
+    impl::ChunkedBlockStorage<Event::ExtraData> m_eventExtraDatas;
 
     // activation logic
     // we support reentrant begin frame
