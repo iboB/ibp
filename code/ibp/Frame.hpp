@@ -9,6 +9,7 @@
 
 #include <iosfwd>
 #include <string>
+#include <deque>
 
 namespace ibp
 {
@@ -46,6 +47,9 @@ private:
     };
     profile::ChunkedBlockStorage<Event> m_events;
     profile::ChunkedBlockStorage<Event::ExtraData> m_eventExtraDatas;
+
+    // this can be redesigned to a free-list type of struct
+    std::deque<std::string> m_eventExtraStoredStrings;
 
     // activation logic
     // we support reentrant begin frame

@@ -86,6 +86,35 @@ public:
         e.desc = nullptr;
         e.nsTimestamp = end.time_since_epoch().count();
     }
+
+    Frame::Event::ExtraData& newExtraData()
+    {
+        if (!frame->m_eventExtraDatas.valid())
+        {
+            frame->m_eventExtraDatas.init();
+        }
+        return frame->m_eventExtraDatas.emplace_back();
+    }
+
+    Frame::Event::ExtraData& newExtraDataNum(int64_t num)
+    {
+        // shouldn't be possible to call with no frame
+        assert(frame);
+        auto& ret = newExtraData();
+        ret.num = num;
+        ret.string = nullptr;
+    }
+
+    Frame::Event::ExtraData& newExtraDataStoredString(std::string_view str)
+    {
+        // shouldn't be possible to call with no frame
+        assert(frame);
+        auto& added = frame->m_eventExtraStoredStrings.emplace_back(str);
+
+        auto& ret = newExtraData();
+        ret.num = int64_t(added.length());
+        ret.string = added.c_str();
+    }
 };
 
 static thread_local ThreadProfile thread;
