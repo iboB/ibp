@@ -9,19 +9,19 @@ namespace ibp::profile
 class EntryDesc;
 
 // implemented in ProfileImpl.cpp
-IBP_API void beginBlock(const EntryDesc& desc);
-IBP_API void endTopBlock();
+IBP_API void newEvent(const EntryDesc& desc);
+IBP_API void endEvent();
 
 class BlockSentry
 {
 public:
     BlockSentry(EntryDesc& desc)
     {
-        profile::beginBlock(desc);
+        profile::newEvent(desc);
     }
     ~BlockSentry()
     {
-        profile::endTopBlock();
+        profile::endEvent();
     }
 
     BlockSentry(const BlockSentry&) = delete;

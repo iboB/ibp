@@ -8,8 +8,7 @@ target_sources(ibp PRIVATE
 
     profile/EntryDesc.hpp
     profile/EntryDesc.cpp
-    profile/Block.hpp
-    profile/Event.hpp
+    profile/ProfileFuncs.hpp
     profile/FrameSentry.hpp
     profile/ProfileImpl.cpp
 

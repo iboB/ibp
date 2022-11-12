@@ -1,5 +1,4 @@
-#include "Event.hpp"
-#include "Block.hpp"
+#include "ProfileFuncs.hpp"
 #include "FrameSentry.hpp"
 #include "../Frame.hpp"
 
@@ -128,8 +127,7 @@ public:
 static thread_local ThreadProfile thread;
 
 void newEvent(const EntryDesc& desc) { thread.newEvent(desc); }
-void beginBlock(const EntryDesc& desc) { thread.newEvent(desc); }
-void endTopBlock() { thread.endEvent(); }
+void endEvent() { thread.endEvent(); }
 
 FrameSentry::FrameSentry(Frame& f)
     : m_frameStarted(f.enabled())

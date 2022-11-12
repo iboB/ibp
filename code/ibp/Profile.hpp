@@ -3,8 +3,7 @@
 //
 #pragma once
 #include "profile/EntryDesc.hpp"
-#include "profile/Block.hpp"
-#include "profile/Event.hpp"
+#include "profile/ProfileFuncs.hpp"
 
 #define I_IBP_PP_CAT(a, b) I_IBP_PP_INTERNAL_CAT(a, b)
 #define I_IBP_PP_INTERNAL_CAT(a, b) a##b
@@ -28,9 +27,9 @@
 
 #define IBPROFILE_BLOCK_BEGIN(label) \
     I_IBPROFILE_EVENT_DESC(::ibp::profile::EntryDesc::Type::Block, label); \
-    ::ibp::profile::beginBlock(I_IBPROFILE_U_NAME(_ibp_blockDesc))
+    ::ibp::profile::newEvent(I_IBPROFILE_U_NAME(_ibp_blockDesc))
 
-#define IBPROFILE_BLOCK_END() ::ibp::profile::endTopBlock()
+#define IBPROFILE_BLOCK_END() ::ibp::profile::endEvent()
 
 #define IBPROFILE_EVENT(label) \
     I_IBPROFILE_EVENT_DESC(::ibp::profile::EntryDesc::Type::Event, label); \
