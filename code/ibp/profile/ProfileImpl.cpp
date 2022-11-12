@@ -114,11 +114,11 @@ public:
         ret.string = str.data();
     }
 
-    Frame::Event::ExtraData& newExtraDataStoredString(std::string_view str)
+    Frame::Event::ExtraData& newExtraDataStoredString(std::string str)
     {
         // shouldn't be possible to call with no frame
         assert(frame);
-        auto& added = frame->m_eventExtraStoredStrings.emplace_back(str);
+        auto& added = frame->m_eventExtraStoredStrings.emplace_back(std::move(str));
         auto& ret = newExtraData();
         ret.num = int64_t(added.length());
         ret.string = added.c_str();

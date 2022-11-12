@@ -47,9 +47,13 @@ void printEntries(std::ostream& out, itlib::span<const ReportEntry> entries, int
     {
         for (int i = 0; i < depth; ++i) out << "  ";
         out << t2s(e.desc.type) << ' ';
-        out << e.desc.label << ": ";
-        out << (e.nsEnd - e.nsStart) / 1'000'000;
-        out << " ms\n";
+        out << e.desc.label;
+        if (e.desc.type != profile::EntryDesc::Type::Event) {
+            out << ": ";
+            out << (e.nsEnd - e.nsStart) / 1'000'000;
+            out << " ms";
+        }
+        out << '\n';
         printEntries(out, e.children, depth + 1);
     }
 }
