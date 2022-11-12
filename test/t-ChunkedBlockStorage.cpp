@@ -10,36 +10,36 @@ using ibp::profile::ChunkedBlockStorage;
 
 TEST_CASE("test")
 {
-    ChunkedBlockStorage<int> c(2);
-    CHECK_FALSE(c.valid()); // not valid by default
-    CHECK(c.empty()); // empty on ivalid is safe
+    ChunkedBlockStorage<int> cbs(2);
+    CHECK_FALSE(cbs.valid()); // not valid by default
+    CHECK(cbs.empty()); // empty on ivalid is safe
 
     // iterate invalid is safe (and empty)
     using ivec = std::vector<int>;
     ivec val;
-    for (auto& i : c)
+    for (auto& i : cbs)
     {
         val.push_back(i);
     }
     CHECK(val.empty());
 
-    c.init();
-    CHECK(c.valid()); // valid after initialize
-    CHECK(c.empty()); // still empty
+    cbs.init();
+    CHECK(cbs.valid()); // valid after initialize
+    CHECK(cbs.empty()); // still empty
 
-    for (auto& i : c)
+    for (auto& i : cbs)
     {
         val.push_back(i);
     }
     CHECK(val.empty()); // still empty after init
 
-    c.emplace_back() = 1;
-    c.emplace_back() = 2;
-    CHECK_FALSE(c.empty()); // not empty
+    cbs.emplace_back() = 1;
+    cbs.emplace_back() = 2;
+    CHECK_FALSE(cbs.empty()); // not empty
 
     std::vector<const int*> addr;
 
-    for (auto& i : c)
+    for (auto& i : cbs)
     {
         addr.push_back(&i);
         val.push_back(i);
@@ -48,13 +48,13 @@ TEST_CASE("test")
     CHECK(val == ivec{1, 2}); // contents
     CHECK(addr[0] + 1 == addr[1]); // consecutive addresses
 
-    c.emplace_back() = 3;
-    c.emplace_back() = 4;
-    c.emplace_back() = 5;
+    cbs.emplace_back() = 3;
+    cbs.emplace_back() = 4;
+    cbs.emplace_back() = 5;
 
     std::vector<const int*> addr2;
     val.clear();
-    for (auto& i : c)
+    for (auto& i : cbs)
     {
         addr2.push_back(&i);
         val.push_back(i);
@@ -67,26 +67,26 @@ TEST_CASE("test")
     CHECK(addr2[2] + 1 == addr2[3]); // second pair is consecutive
     CHECK(addr2[3] + 1 != addr2[4]); // third pair is not after second
 
-    c.reset();
-    CHECK(c.valid()); // valid after reset
-    CHECK(c.empty());
+    cbs.reset();
+    CHECK(cbs.valid()); // valid after reset
+    CHECK(cbs.empty());
 
     val.clear();
-    for (auto& i : c)
+    for (auto& i : cbs)
     {
         val.push_back(i);
     }
     CHECK(val.empty()); // empty after reset
 
-    c.emplace_back() = 10;
-    c.emplace_back() = 20;
-    c.emplace_back() = 30;
-    c.emplace_back() = 40;
-    c.emplace_back() = 50;
+    cbs.emplace_back() = 10;
+    cbs.emplace_back() = 20;
+    cbs.emplace_back() = 30;
+    cbs.emplace_back() = 40;
+    cbs.emplace_back() = 50;
 
     addr.clear();
     val.clear();
-    for (auto& i : c)
+    for (auto& i : cbs)
     {
         addr.push_back(&i);
         val.push_back(i);
@@ -95,14 +95,14 @@ TEST_CASE("test")
     CHECK(val == ivec{10, 20, 30, 40, 50}); // contents
     CHECK(addr == addr2); // addresses preserved
 
-    auto c2 = std::move(c);
-    CHECK_FALSE(c.valid()); // not valid after move
-    CHECK(c.empty());
-    CHECK(c2.valid());
+    auto cbs2 = std::move(cbs);
+    CHECK_FALSE(cbs.valid()); // not valid after move
+    CHECK(cbs.empty());
+    CHECK(cbs2.valid());
 
     addr.clear();
     val.clear();
-    for (auto& i : c2)
+    for (auto& i : cbs2)
     {
         addr.push_back(&i);
         val.push_back(i);
@@ -111,21 +111,21 @@ TEST_CASE("test")
     CHECK(val == ivec{10, 20, 30, 40, 50}); // contents
     CHECK(addr == addr2); // addresses preserved
 
-    c2.reset();
+    cbs2.reset();
 
-    auto c3 = std::move(c2);
-    CHECK(c3.valid());
-    CHECK(c3.empty());
+    auto cbs3 = std::move(cbs2);
+    CHECK(cbs3.valid());
+    CHECK(cbs3.empty());
 
-    c3.emplace_back() = 6;
-    c3.emplace_back() = 7;
-    c3.emplace_back() = 8;
-    c3.emplace_back() = 9;
-    c3.emplace_back() = 10;
+    cbs3.emplace_back() = 6;
+    cbs3.emplace_back() = 7;
+    cbs3.emplace_back() = 8;
+    cbs3.emplace_back() = 9;
+    cbs3.emplace_back() = 10;
 
     addr.clear();
     val.clear();
-    for (auto& i : c3)
+    for (auto& i : cbs3)
     {
         addr.push_back(&i);
         val.push_back(i);
