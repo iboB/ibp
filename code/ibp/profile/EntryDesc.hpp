@@ -5,6 +5,7 @@
 #include "../API.h"
 
 #include <cstdint>
+#include <optional>
 
 namespace ibp::profile
 {
@@ -19,6 +20,9 @@ public:
     EntryDesc(Type t, const char* l);
     Type type;
     const char* label;
-    uint64_t hash;
+
+    uint64_t hash() const;
+private:
+    mutable std::optional<uint64_t> m_hash;
 };
 }

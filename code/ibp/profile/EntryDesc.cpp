@@ -13,13 +13,16 @@ namespace ibp::profile
 EntryDesc::EntryDesc(Type t, const char* l)
     : label(l)
     , type(t)
-{
-    auto len = strlen(label);
+{}
+
+uint64_t EntryDesc::hash() const {
+    if (m_hash) return *m_hash;
     XXH64_state_t hstate;
     XXH64_reset(&hstate, 0);
+    auto len = strlen(label);
     XXH64_update(&hstate, label, len);
-    XXH64_update(&hstate, &type, 1);
-    hash = XXH64_digest(&hstate);
+    XXH64_update(&hstate, &type, sizeof(Type));
+    return m_hash.emplace(XXH64_digest(&hstate));
 }
 
 }
