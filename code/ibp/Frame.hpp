@@ -25,6 +25,10 @@ public:
     bool enabled() const { return m_enabled; }
     void setEnabled(bool b = true) { m_enabled = b; }
 
+    // clear all collected data
+    // call this if you reuse the frame
+    void clear();
+
     // temp
     void dump(std::ostream& out);
 private:

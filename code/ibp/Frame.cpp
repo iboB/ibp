@@ -16,6 +16,14 @@ Frame::Frame(std::string_view name)
     , m_profileDesc(profile::EntryDesc::Type::Frame, m_name.c_str())
 {}
 
+void Frame::clear()
+{
+    assert(m_timesEntered == 0);
+    if (m_events.valid()) m_events.reset();
+    if (m_eventExtraDatas.valid()) m_events.reset();
+    m_eventExtraStoredStrings.clear();
+}
+
 namespace
 {
 
