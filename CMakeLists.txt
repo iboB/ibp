@@ -5,8 +5,12 @@ cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 project(ibp)
 
+#######################################
 # cpm
 include(./get_cpm.cmake)
+macro(ibp_dep packageName)
+    include(${PROJECT_SOURCE_DIR}/cpm/${packageName}.cmake)
+endmacro()
 
 #######################################
 # cmake lib
@@ -25,16 +29,6 @@ include(icm_add_lib)
 option(IBP_STATIC "ibp: build as static lib" OFF)
 option(IBP_BUILD_TESTS "ibp: build tests" ${ICM_DEV_MODE})
 option(IBP_BUILD_EXAMPLES "ibp: build examples" ${ICM_DEV_MODE})
-
-#######################################
-# packages
-CPMAddPackage(gh:iboB/splat@1.2.1)
-CPMAddPackage(gh:iboB/itlib@1.6.3)
-
-CPMAddPackage(gh:Cyan4973/xxHash@0.8.1)
-add_library(ibp-xxhash INTERFACE)
-add_library(ibp::xxhash ALIAS ibp-xxhash)
-target_include_directories(ibp-xxhash INTERFACE ${xxHash_SOURCE_DIR})
 
 #######################################
 # subdirs

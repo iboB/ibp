@@ -3,7 +3,7 @@
 #
 include(icm_testing)
 
-CPMAddPackage(gh:iboB/doctest-util@0.0.5)
+ibp_dep(testing)
 
 macro(ibp_test test)
     add_doctest_lib_test(${test} ibp ${ARGN})

@@ -19,6 +19,10 @@ target_sources(ibp PRIVATE
 
 target_include_directories(ibp INTERFACE ..)
 
+ibp_dep(splat)
+ibp_dep(itlib)
+ibp_dep(xxhash)
+
 target_link_libraries(ibp
     PUBLIC
         splat::splat
