@@ -9,8 +9,7 @@ namespace ibp::profile
 class Frame;
 
 // implemented in ProfileImpl.cpp
-class IBP_API FrameSentry
-{
+class IBP_API FrameSentry {
     bool m_frameStarted;
 public:
     // sets frame as current if frame is enabled

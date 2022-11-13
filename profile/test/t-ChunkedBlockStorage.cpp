@@ -8,8 +8,7 @@
 
 using ibp::profile::ChunkedBlockStorage;
 
-TEST_CASE("test")
-{
+TEST_CASE("test") {
     ChunkedBlockStorage<int> cbs(2);
     CHECK_FALSE(cbs.valid()); // not valid by default
     CHECK(cbs.empty()); // empty on ivalid is safe
@@ -17,8 +16,7 @@ TEST_CASE("test")
     // iterate invalid is safe (and empty)
     using ivec = std::vector<int>;
     ivec val;
-    for (auto& i : cbs)
-    {
+    for (auto& i : cbs) {
         val.push_back(i);
     }
     CHECK(val.empty());
@@ -27,8 +25,7 @@ TEST_CASE("test")
     CHECK(cbs.valid()); // valid after initialize
     CHECK(cbs.empty()); // still empty
 
-    for (auto& i : cbs)
-    {
+    for (auto& i : cbs) {
         val.push_back(i);
     }
     CHECK(val.empty()); // still empty after init
@@ -39,8 +36,7 @@ TEST_CASE("test")
 
     std::vector<const int*> addr;
 
-    for (auto& i : cbs)
-    {
+    for (auto& i : cbs) {
         addr.push_back(&i);
         val.push_back(i);
     }
@@ -54,8 +50,7 @@ TEST_CASE("test")
 
     std::vector<const int*> addr2;
     val.clear();
-    for (auto& i : cbs)
-    {
+    for (auto& i : cbs) {
         addr2.push_back(&i);
         val.push_back(i);
     }
@@ -72,8 +67,7 @@ TEST_CASE("test")
     CHECK(cbs.empty());
 
     val.clear();
-    for (auto& i : cbs)
-    {
+    for (auto& i : cbs) {
         val.push_back(i);
     }
     CHECK(val.empty()); // empty after reset
@@ -86,8 +80,7 @@ TEST_CASE("test")
 
     addr.clear();
     val.clear();
-    for (auto& i : cbs)
-    {
+    for (auto& i : cbs) {
         addr.push_back(&i);
         val.push_back(i);
     }
@@ -102,8 +95,7 @@ TEST_CASE("test")
 
     addr.clear();
     val.clear();
-    for (auto& i : cbs2)
-    {
+    for (auto& i : cbs2) {
         addr.push_back(&i);
         val.push_back(i);
     }
@@ -125,8 +117,7 @@ TEST_CASE("test")
 
     addr.clear();
     val.clear();
-    for (auto& i : cbs3)
-    {
+    for (auto& i : cbs3) {
         addr.push_back(&i);
         val.push_back(i);
     }

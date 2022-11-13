@@ -4,23 +4,19 @@
 #pragma once
 #include "API.h"
 
-namespace ibp::profile
-{
+namespace ibp::profile {
 class EntryDesc;
 
 // implemented in ProfileImpl.cpp
 IBP_API void newEvent(const EntryDesc& desc);
 IBP_API void endEvent();
 
-class BlockSentry
-{
+class BlockSentry {
 public:
-    BlockSentry(EntryDesc& desc)
-    {
+    BlockSentry(EntryDesc& desc) {
         profile::newEvent(desc);
     }
-    ~BlockSentry()
-    {
+    ~BlockSentry() {
         profile::endEvent();
     }
 

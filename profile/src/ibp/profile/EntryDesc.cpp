@@ -7,8 +7,7 @@
 #define XXH_IMPLEMENTATION
 #include <xxhash.h>
 
-namespace ibp::profile
-{
+namespace ibp::profile {
 
 EntryDesc::EntryDesc(EventType t, const char* l)
     : label(l)

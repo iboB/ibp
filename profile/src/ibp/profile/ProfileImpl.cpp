@@ -9,15 +9,12 @@ namespace ibp::profile {
 
 using clock = std::chrono::steady_clock;
 
-class ThreadProfile
-{
+class ThreadProfile {
 public:
     Frame* frame;
 
-    void beginFrame(Frame& f)
-    {
-        if (frame == &f)
-        {
+    void beginFrame(Frame& f) {
+        if (frame == &f) {
             // reentering frame
             assert(frame->m_timesEntered > 0);
             ++frame->m_timesEntered;
@@ -34,8 +31,7 @@ public:
         f.m_prevFrame = frame;
 
         // init frame in case it's the first time it has been entered
-        if (!f.m_events.valid())
-        {
+        if (!f.m_events.valid()) {
             f.m_events.init();
         }
 
@@ -43,12 +39,10 @@ public:
         newEvent(frame->m_profileDesc);
     }
 
-    void endTopFrame()
-    {
+    void endTopFrame() {
         assert(frame);
 
-        if (frame->m_timesEntered > 1)
-        {
+        if (frame->m_timesEntered > 1) {
             --frame->m_timesEntered;
             return; // nothing more to do
         }
@@ -67,16 +61,14 @@ public:
         frame = prev;
     }
 
-    void newEvent(const EntryDesc& desc)
-    {
+    void newEvent(const EntryDesc& desc) {
         if (!frame) return; // safe - no frame
         auto& b = frame->m_events.emplace_back();
         b.desc = &desc;
         b.nsTimestamp = clock::now().time_since_epoch().count(); // start time at the last possible moment
     }
 
-    void endEvent()
-    {
+    void endEvent() {
         if (!frame) return; // safe - no frame
         // end time at the first possible moment...
         auto end = clock::now();
@@ -86,17 +78,14 @@ public:
         e.nsTimestamp = end.time_since_epoch().count();
     }
 
-    Frame::Event::ExtraData& newExtraData()
-    {
-        if (!frame->m_eventExtraDatas.valid())
-        {
+    Frame::Event::ExtraData& newExtraData() {
+        if (!frame->m_eventExtraDatas.valid()) {
             frame->m_eventExtraDatas.init();
         }
         return frame->m_eventExtraDatas.emplace_back();
     }
 
-    Frame::Event::ExtraData& newExtraDataNum(int64_t num)
-    {
+    Frame::Event::ExtraData& newExtraDataNum(int64_t num) {
         // shouldn't be possible to call with no frame
         assert(frame);
         auto& ret = newExtraData();
@@ -104,8 +93,7 @@ public:
         ret.string = nullptr;
     }
 
-    Frame::Event::ExtraData& newExtraDataExternalString(std::string_view str)
-    {
+    Frame::Event::ExtraData& newExtraDataExternalString(std::string_view str) {
         // shouldn't be possible to call with no frame
         assert(frame);
         auto& ret = newExtraData();
@@ -113,8 +101,7 @@ public:
         ret.string = str.data();
     }
 
-    Frame::Event::ExtraData& newExtraDataStoredString(std::string str)
-    {
+    Frame::Event::ExtraData& newExtraDataStoredString(std::string str) {
         // shouldn't be possible to call with no frame
         assert(frame);
         auto& added = frame->m_eventExtraStoredStrings.emplace_back(std::move(str));
@@ -135,8 +122,7 @@ FrameSentry::FrameSentry(Frame& f)
     if (m_frameStarted) thread.beginFrame(f);
 }
 
-FrameSentry::~FrameSentry()
-{
+FrameSentry::~FrameSentry() {
     if (!m_frameStarted) return;
     thread.endTopFrame();
 }

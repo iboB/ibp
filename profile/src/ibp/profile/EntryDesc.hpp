@@ -9,10 +9,8 @@
 #include <cstdint>
 #include <optional>
 
-namespace ibp::profile
-{
-class IBP_API EntryDesc
-{
+namespace ibp::profile {
+class IBP_API EntryDesc {
 public:
     EntryDesc(EventType t, const char* l);
     EventType type;

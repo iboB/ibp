@@ -11,12 +11,10 @@
 #include <string>
 #include <deque>
 
-namespace ibp::profile
-{
+namespace ibp::profile {
 class ThreadProfile;
 
-class IBP_API Frame
-{
+class IBP_API Frame {
 public:
     Frame(std::string_view name);
 
@@ -37,13 +35,11 @@ private:
     friend class ThreadProfile;
 
     // raw profile data
-    struct Event
-    {
+    struct Event {
         const EntryDesc* desc; // will be null for block end
         uint64_t nsTimestamp;
 
-        struct ExtraData
-        {
+        struct ExtraData {
             int64_t num; // if string is not null, this is used as length
             const char* string;
         };
