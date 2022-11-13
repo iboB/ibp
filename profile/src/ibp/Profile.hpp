@@ -24,18 +24,18 @@
     ::ibp::profile::BlockSentry I_IBPROFILE_U_NAME(_ibp_profileSentry)(I_IBPROFILE_U_NAME(_ibp_blockDesc))
 
 
-#define IBPROFILE_FUNC() I_PROFILE_BLOCK(::ibp::profile::EntryDesc::Type::Function, __func__)
+#define IBPROFILE_FUNC() I_PROFILE_BLOCK(::ibp::EventType::Function, __func__)
 
-#define IBPROFILE_SCOPE(label) I_PROFILE_BLOCK(::ibp::profile::EntryDesc::Type::Block, label)
+#define IBPROFILE_SCOPE(label) I_PROFILE_BLOCK(::ibp::EventType::Block, label)
 
 #define IBPROFILE_BLOCK_BEGIN(label) \
-    I_IBPROFILE_EVENT_DESC(::ibp::profile::EntryDesc::Type::Block, label); \
+    I_IBPROFILE_EVENT_DESC(::ibp::EventType::Block, label); \
     ::ibp::profile::newEvent(I_IBPROFILE_U_NAME(_ibp_blockDesc))
 
 #define IBPROFILE_BLOCK_END() ::ibp::profile::endEvent()
 
 #define IBPROFILE_EVENT(label) \
-    I_IBPROFILE_EVENT_DESC(::ibp::profile::EntryDesc::Type::Event, label); \
+    I_IBPROFILE_EVENT_DESC(::ibp::EventType::BasicEvent, label); \
     ::ibp::profile::newEvent(I_IBPROFILE_U_NAME(_ibp_blockDesc))
 
 #else // IBPROFILE_DISABLED

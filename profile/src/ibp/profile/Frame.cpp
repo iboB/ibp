@@ -13,7 +13,7 @@ Frame::Frame(std::string_view name)
     : m_name(name)
     , m_events(256)
     , m_eventExtraDatas(256)
-    , m_profileDesc(EntryDesc::Type::Frame, m_name.c_str())
+    , m_profileDesc(EventType::Frame, m_name.c_str())
 {}
 
 void Frame::clear()
@@ -38,13 +38,13 @@ struct ReportEntry
 
 void printEntries(std::ostream& out, itlib::span<const ReportEntry> entries, int depth = 0)
 {
-    auto t2s = [](EntryDesc::Type t) -> const char* {
+    auto t2s = [](EventType t) -> const char* {
         switch (t)
         {
-        case EntryDesc::Type::Frame: return "frame";
-        case EntryDesc::Type::Function: return "func";
-        case EntryDesc::Type::Block: return "b";
-        case EntryDesc::Type::Event: return "e";
+        case EventType::Frame: return "frame";
+        case EventType::Function: return "func";
+        case EventType::Block: return "b";
+        case EventType::BasicEvent: return "e";
         }
 
         return "?";
@@ -56,7 +56,7 @@ void printEntries(std::ostream& out, itlib::span<const ReportEntry> entries, int
         for (int i = 0; i < depth; ++i) out << "  ";
         out << t2s(e.desc.type) << ' ';
         out << e.desc.label;
-        if (e.desc.type != EntryDesc::Type::Event) {
+        if (e.desc.type != EventType::BasicEvent) {
             out << ": ";
             out << (e.nsEnd - e.nsStart) / 1'000'000;
             out << " ms";
@@ -78,7 +78,7 @@ void Frame::dump(std::ostream& out)
     {
         if (e.desc)
         {
-            if (e.desc->type == EntryDesc::Type::Event)
+            if (e.desc->type == EventType::BasicEvent)
             {
                 assert(!stack.empty());
                 auto& c = stack.back().children.emplace_back(*e.desc, e.nsTimestamp);

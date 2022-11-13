@@ -4,6 +4,8 @@
 #pragma once
 #include "API.h"
 
+#include <ibp/EventType.hpp>
+
 #include <cstdint>
 #include <optional>
 
@@ -12,13 +14,8 @@ namespace ibp::profile
 class IBP_API EntryDesc
 {
 public:
-    enum class Type : uint8_t
-    {
-        Frame, Function, Block, Event
-    };
-
-    EntryDesc(Type t, const char* l);
-    Type type;
+    EntryDesc(EventType t, const char* l);
+    EventType type;
     const char* label;
 
     uint64_t hash() const;

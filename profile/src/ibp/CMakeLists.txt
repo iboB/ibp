@@ -1,9 +1,9 @@
 # Copyright (c) Borislav Stanimirov
 # SPDX-License-Identifier: MIT
 #
-icm_add_lib(ibp IBP)
-add_library(ibp::ibp ALIAS ibp)
-target_sources(ibp PRIVATE
+icm_add_lib(ibp-profile IBP)
+add_library(ibp::profile ALIAS ibp-profile)
+target_sources(ibp-profile PRIVATE
     profile/ChunkedBlockStorage.hpp
     profile/API.h
     profile/EntryDesc.hpp
@@ -17,14 +17,15 @@ target_sources(ibp PRIVATE
     Profile.hpp
 )
 
-target_include_directories(ibp INTERFACE ..)
+target_include_directories(ibp-profile INTERFACE ..)
 
 ibp_dep(splat)
 ibp_dep(itlib)
 ibp_dep(xxhash)
 
-target_link_libraries(ibp
+target_link_libraries(ibp-profile
     PUBLIC
+        ibp::core
         splat::splat
         itlib::itlib
     PRIVATE

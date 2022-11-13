@@ -34,7 +34,7 @@ option(IBP_BUILD_EXAMPLES "ibp: build examples" ${ICM_DEV_MODE})
 # subdirs
 
 add_subdirectory(core)
-add_subdirectory(code/ibp)
+add_subdirectory(profile)
 
 if(ICM_DEV_MODE)
     add_subdirectory(scratch)
@@ -45,6 +45,5 @@ endif()
 #~ endif()
 
 if(IBP_BUILD_TESTS)
-    enable_testing()
-    add_subdirectory(test)
+    enable_testing()    
 endif()
