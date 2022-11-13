@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: MIT
 //
 #include <ibp/Profile.hpp>
-#include <ibp/Frame.hpp>
+#include <ibp/profile/Frame.hpp>
 #include <ibp/profile/FrameSentry.hpp>
 
 #include <iostream>
@@ -29,7 +29,7 @@ void foo(int i) {
 }
 
 int main() {
-    ibp::Frame frame("main");
+    ibp::profile::Frame frame("main");
     frame.setEnabled();
     {
         ibp::profile::FrameSentry f(frame);

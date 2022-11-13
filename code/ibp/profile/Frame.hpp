@@ -4,16 +4,16 @@
 #pragma once
 #include "API.h"
 
-#include "profile/EntryDesc.hpp"
-#include "profile/ChunkedBlockStorage.hpp"
+#include "EntryDesc.hpp"
+#include "ChunkedBlockStorage.hpp"
 
 #include <iosfwd>
 #include <string>
 #include <deque>
 
-namespace ibp
+namespace ibp::profile
 {
-namespace profile { class ThreadProfile; }
+class ThreadProfile;
 
 class IBP_API Frame
 {
@@ -34,12 +34,12 @@ public:
 private:
     std::string m_name;
 
-    friend class profile::ThreadProfile;
+    friend class ThreadProfile;
 
     // raw profile data
     struct Event
     {
-        const profile::EntryDesc* desc; // will be null for block end
+        const EntryDesc* desc; // will be null for block end
         uint64_t nsTimestamp;
 
         struct ExtraData
@@ -49,8 +49,8 @@ private:
         };
         ExtraData* extra; // null if no extra data
     };
-    profile::ChunkedBlockStorage<Event> m_events;
-    profile::ChunkedBlockStorage<Event::ExtraData> m_eventExtraDatas;
+    ChunkedBlockStorage<Event> m_events;
+    ChunkedBlockStorage<Event::ExtraData> m_eventExtraDatas;
 
     // this can be redesigned to a free-list type of struct
     std::deque<std::string> m_eventExtraStoredStrings;
@@ -63,7 +63,7 @@ private:
     bool m_enabled = false;
 
     // frame desc
-    profile::EntryDesc m_profileDesc;
+    EntryDesc m_profileDesc;
 };
 
 }

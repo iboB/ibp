@@ -2,14 +2,12 @@
 // SPDX-License-Identifier: MIT
 //
 #pragma once
-#include "../API.h"
+#include "API.h"
 
-namespace ibp
+namespace ibp::profile
 {
 class Frame;
 
-namespace profile
-{
 // implemented in ProfileImpl.cpp
 class IBP_API FrameSentry
 {
@@ -29,5 +27,4 @@ public:
     FrameSentry& operator=(FrameSentry&&) noexcept = delete;
 };
 
-}
 }

@@ -1,6 +1,6 @@
 #include "ProfileFuncs.hpp"
 #include "FrameSentry.hpp"
-#include "../Frame.hpp"
+#include "Frame.hpp"
 
 #include <chrono>
 #include <cassert>
