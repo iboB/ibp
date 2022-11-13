@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 //
 #pragma once
+
+#if !defined(IBPROFILE_DISABLED)
+
 #include "profile/EntryDesc.hpp"
 #include "profile/ProfileFuncs.hpp"
 
@@ -34,3 +37,13 @@
 #define IBPROFILE_EVENT(label) \
     I_IBPROFILE_EVENT_DESC(::ibp::profile::EntryDesc::Type::Event, label); \
     ::ibp::profile::newEvent(I_IBPROFILE_U_NAME(_ibp_blockDesc))
+
+#else // IBPROFILE_DISABLED
+
+#define IBPROFILE_FUNC(...)
+#define IBPROFILE_SCOPE(...)
+#define IBPROFILE_BLOCK_BEGIN(...)
+#define IBPROFILE_BLOCK_END(...)
+#define IBPROFILE_EVENT(...)
+
+#endif
