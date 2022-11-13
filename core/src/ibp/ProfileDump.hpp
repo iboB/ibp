@@ -6,7 +6,7 @@
 #include "StringBuf.hpp"
 
 namespace ibp {
-class EventDump
+class ProfileDump
 {
 public:
     StringBuf strings;
@@ -20,8 +20,8 @@ public:
     static constexpr uint32_t None = ~uint32_t(0);
 
     struct EventExtra {
-        enum class ExtraType : uint64_t {
-            None, Num, String
+        enum class Type : uint64_t {
+            Num, String
         };
         Type type;
         union {

@@ -63,9 +63,10 @@ public:
 
     void newEvent(const EntryDesc& desc) {
         if (!frame) return; // safe - no frame
-        auto& b = frame->m_events.emplace_back();
-        b.desc = &desc;
-        b.nsTimestamp = clock::now().time_since_epoch().count(); // start time at the last possible moment
+        auto& e = frame->m_events.emplace_back();
+        e.desc = &desc;
+        e.nsTimestamp = clock::now().time_since_epoch().count(); // start time at the last possible moment
+        e.extra = nullptr;
     }
 
     void endEvent() {
@@ -76,6 +77,7 @@ public:
         auto& e = frame->m_events.emplace_back();
         e.desc = nullptr;
         e.nsTimestamp = end.time_since_epoch().count();
+        e.extra = nullptr;
     }
 
     Frame::Event::ExtraData& newExtraData() {

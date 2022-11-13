@@ -7,11 +7,15 @@
 #include "EntryDesc.hpp"
 #include "ChunkedBlockStorage.hpp"
 
-#include <iosfwd>
 #include <string>
 #include <deque>
+#include <string>
+#include <string_view>
 
-namespace ibp::profile {
+namespace ibp {
+class ProfileDump;
+
+namespace profile {
 class ThreadProfile;
 
 class IBP_API Frame {
@@ -28,7 +32,7 @@ public:
     void clear();
 
     // temp
-    void dump(std::ostream& out);
+    ProfileDump dump() const;
 private:
     std::string m_name;
 
@@ -62,4 +66,5 @@ private:
     EntryDesc m_profileDesc;
 };
 
+}
 }

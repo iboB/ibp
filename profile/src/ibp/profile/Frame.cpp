@@ -1,10 +1,11 @@
 #include "Frame.hpp"
 
+#include <ibp/ProfileDump.hpp>
+
 #include <itlib/span.hpp>
 
-#include <ostream>
-#include <vector>
 #include <cassert>
+#include <unordered_map>
 
 namespace ibp::profile
 {
@@ -23,78 +24,51 @@ void Frame::clear() {
     m_eventExtraStoredStrings.clear();
 }
 
-namespace {
+ProfileDump Frame::dump() const {
+    ProfileDump ret;
 
-struct ReportEntry {
-    ReportEntry(const EntryDesc& d, uint64_t start) : desc(d), nsStart(start), nsEnd(0) {}
-    const EntryDesc& desc;
-    uint64_t nsStart;
-    uint64_t nsEnd;
-    std::vector<ReportEntry> children;
-};
+    std::unordered_map<uint64_t, size_t> descHashToIndex;
 
-void printEntries(std::ostream& out, itlib::span<const ReportEntry> entries, int depth = 0) {
-    auto t2s = [](EventType t) -> const char* {
-        switch (t) {
-        case EventType::Frame: return "frame";
-        case EventType::Function: return "func";
-        case EventType::Block: return "b";
-        case EventType::BasicEvent: return "e";
+    for (auto& fe : m_events) {
+        auto& de = ret.events.emplace_back();
+        de.nsTimestamp = fe.nsTimestamp;
+        if (!fe.desc) { // end
+            de.idesc = ProfileDump::None;
+            de.iextra = ProfileDump::None;
+            continue;
         }
 
-        return "?";
-    };
+        de.idesc = [&]() {
+            auto& fdesc = *fe.desc;
+            auto dhash = fdesc.hash();
+            auto f = descHashToIndex.find(dhash);
+            if (f != descHashToIndex.end()) return uint32_t(f->second);
 
+            auto idesc = ret.eventDescs.size();
+            auto& ddesc = ret.eventDescs.emplace_back();
+            ddesc.type = fdesc.type;
+            ddesc.label = ret.strings.addString(fdesc.label);
+            return uint32_t(idesc);
+        }();
 
-    for (auto& e : entries) {
-        for (int i = 0; i < depth; ++i) out << "  ";
-        out << t2s(e.desc.type) << ' ';
-        out << e.desc.label;
-        if (e.desc.type != EventType::BasicEvent) {
-            out << ": ";
-            out << (e.nsEnd - e.nsStart) / 1'000'000;
-            out << " ms";
+        if (!fe.extra) {
+            de.iextra = ProfileDump::None;
+            continue;
         }
-        out << '\n';
-        printEntries(out, e.children, depth + 1);
-    }
-}
-}
 
-void Frame::dump(std::ostream& out) {
-    if (m_events.empty()) return;
-
-    std::vector<ReportEntry> roots;
-    std::vector<ReportEntry> stack;
-
-    for (auto& e : m_events) {
-        if (e.desc) {
-            if (e.desc->type == EventType::BasicEvent) {
-                assert(!stack.empty());
-                auto& c = stack.back().children.emplace_back(*e.desc, e.nsTimestamp);
-                c.nsEnd = e.nsTimestamp;
-            }
-            else {
-                stack.emplace_back(*e.desc, e.nsTimestamp);
-            }
+        de.iextra = uint32_t(ret.eventExtras.size());
+        auto& dextra = ret.eventExtras.emplace_back();
+        if (fe.extra->string) {
+            dextra.type = ProfileDump::EventExtra::Type::String;
+            dextra.string = ret.strings.addString({fe.extra->string, size_t(fe.extra->num)});
         }
         else {
-            assert(!stack.empty());
-            stack.back().nsEnd = e.nsTimestamp;
-            auto back = std::move(stack.back());
-            stack.pop_back();
-            if (stack.empty()) {
-                // empty stack means the roots is complete
-                roots.push_back(std::move(back));
-            }
-            else {
-                // otherwise add to prev
-                stack.back().children.push_back(std::move(back));
-            }
+            dextra.type = ProfileDump::EventExtra::Type::Num;
+            dextra.num = fe.extra->num;
         }
     }
 
-    printEntries(out, roots);
+    return ret;
 }
 
 }
