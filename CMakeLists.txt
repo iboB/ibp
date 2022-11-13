@@ -30,6 +30,10 @@ option(IBP_STATIC "ibp: build as static lib" OFF)
 option(IBP_BUILD_TESTS "ibp: build tests" ${ICM_DEV_MODE})
 option(IBP_BUILD_EXAMPLES "ibp: build examples" ${ICM_DEV_MODE})
 
+if(IBP_BUILD_TESTS)
+    enable_testing()
+endif()
+
 #######################################
 # subdirs
 
@@ -43,7 +47,3 @@ endif()
 #~ if(IBP_BUILD_EXAMPLES)
 #~     add_subdirectory(example)
 #~ endif()
-
-if(IBP_BUILD_TESTS)
-    enable_testing()    
-endif()
