@@ -1,8 +1,6 @@
 # Copyright (c) Borislav Stanimirov
 # SPDX-License-Identifier: MIT
 #
-include(icm_testing)
-
 ibp_dep(testing)
 
 macro(ibp_test test)

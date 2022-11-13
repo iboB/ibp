@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 #
 add_library(ibp-core INTERFACE)
-add_iibrary(ibp::core ALIAS ibp-core)
+add_library(ibp::core ALIAS ibp-core)
 target_include_directories(ibp-core INTERFACE .)
 
 ibp_dep(itlib)

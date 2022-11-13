@@ -33,6 +33,7 @@ option(IBP_BUILD_EXAMPLES "ibp: build examples" ${ICM_DEV_MODE})
 #######################################
 # subdirs
 
+add_subdirectory(core)
 add_subdirectory(code/ibp)
 
 if(ICM_DEV_MODE)
