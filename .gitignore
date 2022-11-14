@@ -1,6 +1,8 @@
 build/
 out/
 
+tmp/
+
 # ides
 .vscode/
 .vs/

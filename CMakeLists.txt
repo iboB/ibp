@@ -39,6 +39,7 @@ endif()
 
 add_subdirectory(core)
 add_subdirectory(profile)
+add_subdirectory(cvt)
 
 if(ICM_DEV_MODE)
     add_subdirectory(scratch)

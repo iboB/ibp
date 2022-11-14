@@ -6,8 +6,10 @@
 #include <ibp/profile/FrameSentry.hpp>
 
 #include <ibp/ProfileDump.hpp>
+#include <ibp/DumpToTrace.hpp>
 
 #include <iostream>
+#include <fstream>
 #include <thread>
 #include <vector>
 
@@ -118,5 +120,9 @@ int main() {
     }
     auto d = frame.dump();
     log(std::cout, d);
+
+    std::ofstream fout("foo.json");
+    ibp::ProfileDump_toTraceJson(d, fout);
+
     return 0;
 }
