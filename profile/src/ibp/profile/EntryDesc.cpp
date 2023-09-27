@@ -10,8 +10,8 @@
 namespace ibp::profile {
 
 EntryDesc::EntryDesc(EventType t, const char* l)
-    : label(l)
-    , type(t)
+    : type(t)
+    , label(l)
 {}
 
 uint64_t EntryDesc::hash() const {
