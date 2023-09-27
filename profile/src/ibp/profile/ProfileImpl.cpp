@@ -93,6 +93,7 @@ public:
         auto& ret = newExtraData();
         ret.num = num;
         ret.string = nullptr;
+        return ret;
     }
 
     Frame::Event::ExtraData& newExtraDataExternalString(std::string_view str) {
@@ -101,6 +102,7 @@ public:
         auto& ret = newExtraData();
         ret.num = int64_t(str.length());;
         ret.string = str.data();
+        return ret;
     }
 
     Frame::Event::ExtraData& newExtraDataStoredString(std::string str) {
@@ -110,6 +112,7 @@ public:
         auto& ret = newExtraData();
         ret.num = int64_t(added.length());
         ret.string = added.c_str();
+        return ret;
     }
 };
 
