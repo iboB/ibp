@@ -1,1 +1,1 @@
-CPMAddPackage(gh:iboB/doctest-util@0.0.5)
+CPMAddPackage(gh:iboB/doctest-util@0.1.1)

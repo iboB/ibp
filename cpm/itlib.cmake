@@ -1,1 +1,1 @@
-CPMAddPackage(gh:iboB/itlib@1.6.3)
+CPMAddPackage(gh:iboB/itlib@1.9.2)

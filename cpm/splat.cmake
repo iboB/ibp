@@ -1,1 +1,1 @@
-CPMAddPackage(gh:iboB/splat@1.2.1)
+CPMAddPackage(gh:iboB/splat@1.3.1)

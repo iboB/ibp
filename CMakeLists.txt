@@ -1,7 +1,7 @@
 # Copyright (c) Borislav Stanimirov
 # SPDX-License-Identifier: MIT
 #
-cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.16 FATAL_ERROR)
 
 project(ibp)
 
@@ -14,7 +14,7 @@ endmacro()
 
 #######################################
 # cmake lib
-CPMAddPackage(gh:iboB/icm@1.4.1)
+CPMAddPackage(gh:iboB/icm@1.4.6)
 
 set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}

@@ -1,1 +1,1 @@
-CPMAddPackage(gh:iboB/huse@0.2.4)
+CPMAddPackage(gh:iboB/huse@0.3.1)

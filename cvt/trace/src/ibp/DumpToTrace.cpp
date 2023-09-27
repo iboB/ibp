@@ -10,8 +10,9 @@
 namespace ibp {
 
 void ProfileDump_toTraceJson(const ProfileDump& dump, std::ostream& out) {
-    huse::json::Serializer json(out, true);
-    auto root = json.obj();
+    auto json = huse::json::Make_Serializer(out, true);
+    auto jr = json.root();
+    auto root = jr.obj();
 
     root.val("displayTimeUnit", "ns");
 
