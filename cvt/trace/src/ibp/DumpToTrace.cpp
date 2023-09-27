@@ -5,14 +5,13 @@
 
 #include <ibp/ProfileDump.hpp>
 
-#include <huse/json/Serializer.hpp>
+#include <jout/jout.hpp>
 
 namespace ibp {
 
 void ProfileDump_toTraceJson(const ProfileDump& dump, std::ostream& out) {
-    auto json = huse::json::Make_Serializer(out, true);
-    auto jr = json.root();
-    auto root = jr.obj();
+    jout::Document json(out, true);
+    auto root = json.obj();
 
     root.val("displayTimeUnit", "ns");
 

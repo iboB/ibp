@@ -11,7 +11,7 @@ target_include_directories(ibp-cvt-trace INTERFACE ..)
 
 ibp_dep(splat)
 ibp_dep(itlib)
-ibp_dep(huse)
+ibp_dep(jout)
 
 target_link_libraries(ibp-cvt-trace
     PUBLIC
@@ -19,5 +19,5 @@ target_link_libraries(ibp-cvt-trace
         splat::splat
         itlib::itlib
     PRIVATE
-        huse::huse
+        jout::jout
 )
