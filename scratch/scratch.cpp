@@ -112,9 +112,9 @@ int main() {
     ibp::profile::Frame frame("main");
     frame.setEnabled();
     {
-        ibp::profile::FrameSentry f(frame);
+        ibp::profile::FrameSentry _f(frame);
         for (int i = 0; i < 3; ++i) {
-            ibp::profile::FrameSentry f(frame);
+            ibp::profile::FrameSentry _f2(frame);
             foo(i + 1);
         }
     }
