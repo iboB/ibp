@@ -10,14 +10,12 @@ target_sources(ibp-cvt-trace PRIVATE
 target_include_directories(ibp-cvt-trace INTERFACE ..)
 
 ibp_dep(splat)
-ibp_dep(itlib)
 ibp_dep(jout)
 
 target_link_libraries(ibp-cvt-trace
     PUBLIC
         ibp::core
         splat::splat
-        itlib::itlib
     PRIVATE
         jout::jout
 )
