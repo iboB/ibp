@@ -79,7 +79,7 @@ void log(std::ostream& out, const ibp::ProfileDump& dump) {
         if (e.idesc != ibp::ProfileDump::None) {
             auto& edesc = dump.eventDescs[e.idesc];
             auto type = edesc.type;
-            auto label = dump.strings.getString(edesc.label);
+            auto label = dump.strings.get(edesc.label);
             if (edesc.type == ibp::EventType::BasicEvent) {
                 assert(!stack.empty());
                 auto& c = stack.back().children.emplace_back(type, label, e.nsTimestamp);

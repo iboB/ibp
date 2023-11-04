@@ -15,7 +15,7 @@ public:
         uint32_t length;
     };
 
-    String addString(std::string_view str) {
+    String add(std::string_view str) {
         String ret;
         ret.begin = uint32_t(m_buf.size());
         ret.length = uint32_t(str.length());
@@ -24,7 +24,7 @@ public:
         return ret;
     }
 
-    std::string_view getString(String str) const {
+    std::string_view get(String str) const {
         return {m_buf.data() + str.begin, str.length};
     }
 

@@ -25,7 +25,7 @@ void ProfileDump_toTraceJson(const ProfileDump& dump, std::ostream& out) {
         if (e.idesc != ibp::ProfileDump::None) {
             auto& desc = dump.eventDescs[e.idesc];
             auto type = desc.type;
-            auto label = dump.strings.getString(desc.label);
+            auto label = dump.strings.get(desc.label);
             je.val("name", label);
             switch (type) {
             case EventType::Frame:

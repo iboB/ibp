@@ -47,7 +47,7 @@ ProfileDump Frame::dump() const {
             auto idesc = ret.eventDescs.size();
             auto& ddesc = ret.eventDescs.emplace_back();
             ddesc.type = fdesc.type;
-            ddesc.label = ret.strings.addString(fdesc.label);
+            ddesc.label = ret.strings.add(fdesc.label);
             return uint32_t(idesc);
         }();
 
@@ -60,7 +60,7 @@ ProfileDump Frame::dump() const {
         auto& dextra = ret.eventExtras.emplace_back();
         if (fe.extra->string) {
             dextra.type = ProfileDump::EventExtra::Type::String;
-            dextra.string = ret.strings.addString({fe.extra->string, size_t(fe.extra->num)});
+            dextra.string = ret.strings.add({fe.extra->string, size_t(fe.extra->num)});
         }
         else {
             dextra.type = ProfileDump::EventExtra::Type::Num;
