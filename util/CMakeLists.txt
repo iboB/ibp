@@ -2,4 +2,4 @@
 # SPDX-License-Identifier: MIT
 #
 add_subdirectory(cvt-trace)
-# add_subdirectory(tree)
+add_subdirectory(print-dump)
