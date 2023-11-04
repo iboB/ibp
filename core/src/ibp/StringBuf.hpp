@@ -31,6 +31,10 @@ public:
     void clear() { m_buf.clear(); }
 
     itlib::span<const char> buf() const { return m_buf; }
+
+    void cat(const StringBuf& other) {
+        m_buf.insert(m_buf.end(), other.m_buf.begin(), other.m_buf.end());
+    }
 private:
     itlib::pod_vector<char> m_buf;
 };

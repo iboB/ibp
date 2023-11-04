@@ -20,4 +20,15 @@ TEST_CASE("StringBuf") {
 
     CHECK(sbuf.getString(asdf) == "asdf");
     CHECK(sbuf.getString(xyz) == "xxyyzz");
+
+    StringBuf sbuf2;
+    auto qwer = sbuf2.addString("qwer");
+
+    qwer.begin += uint32_t(sbuf.buf().size());
+    sbuf.cat(sbuf2);
+
+    CHECK(sbuf.buf().size() == 17);
+    CHECK(sbuf.getString(asdf) == "asdf");
+    CHECK(sbuf.getString(xyz) == "xxyyzz");
+    CHECK(sbuf.getString(qwer) == "qwer");
 }
