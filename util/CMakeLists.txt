@@ -1,5 +1,5 @@
 # Copyright (c) Borislav Stanimirov
 # SPDX-License-Identifier: MIT
 #
-add_subdirectory(trace)
-add_subdirectory(tree)
+add_subdirectory(cvt-trace)
+# add_subdirectory(tree)
