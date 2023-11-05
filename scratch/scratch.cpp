@@ -24,7 +24,7 @@ void bar() {
 }
 
 void foo(int i) {
-    IBPROFILE_FUNC();
+    IBPROFILE_FUNC(ibp::profile::Int(i));
     std::this_thread::sleep_for(std::chrono::milliseconds(i * 10));
     if (i == 2) {
         bar();

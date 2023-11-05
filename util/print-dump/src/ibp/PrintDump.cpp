@@ -67,6 +67,24 @@ void ProfileDump_print(const ProfileDump& dump, std::ostream& out) {
             }
 
             out << "'" << label << "'";
+            if (e.iextra != ibp::ProfileDump::None) {
+                out << " (";
+                auto& extra = dump.eventExtras[e.iextra];
+                switch (extra.type) {
+                case ibp::ProfileDump::EventExtra::Type::Num:
+                    out << extra.num;
+                    break;
+                case ibp::ProfileDump::EventExtra::Type::String: {
+                    auto str = dump.strings.get(extra.string);
+                    out << "'" << str << "'";
+                    break;
+                }
+                default:
+                    out << "?";
+                    break;
+                }
+                out << ")";
+            }
 
             if (type != ibp::EventType::BasicEvent) {
                 ++depth;

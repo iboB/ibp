@@ -61,12 +61,29 @@ public:
         frame = prev;
     }
 
-    void newEvent(const EntryDesc& desc) {
+    template <typename ExtraDataFunc>
+    void newEvent(const EntryDesc& desc, ExtraDataFunc extraFunc) {
         if (!frame) return; // safe - no frame
         auto& e = frame->m_events.emplace_back();
         e.desc = &desc;
+        e.extra = extraFunc();
         e.nsTimestamp = clock::now().time_since_epoch().count(); // start time at the last possible moment
-        e.extra = nullptr;
+    }
+
+    void newEvent(const EntryDesc& desc) {
+        newEvent(desc, []() -> Frame::Event::ExtraData* { return nullptr; });
+    }
+
+    void newEventIntExtra(const EntryDesc& desc, int64_t extra) {
+        newEvent(desc, [&]() { return &newExtraDataNum(extra); });
+    }
+
+    void newEventLiteralExtra(const EntryDesc& desc, std::string_view extra) {
+        newEvent(desc, [&]() { return &newExtraDataExternalString(extra); });
+    }
+
+    void newEventStringExtra(const EntryDesc& desc, std::string_view extra) {
+        newEvent(desc, [&]() { return &newExtraDataStoredString(std::string(extra)); });
     }
 
     void endEvent() {
@@ -119,6 +136,9 @@ public:
 static thread_local ThreadProfile thread;
 
 void newEvent(const EntryDesc& desc) { thread.newEvent(desc); }
+void newEvent(const EntryDesc& desc, Int extra) { thread.newEventIntExtra(desc, extra.i); }
+void newEvent(const EntryDesc& desc, Literal extra) { thread.newEventLiteralExtra(desc, extra.str); }
+void newEvent(const EntryDesc& desc, String extra) { thread.newEventStringExtra(desc, extra.str); }
 void endEvent() { thread.endEvent(); }
 
 FrameSentry::FrameSentry(Frame& f)

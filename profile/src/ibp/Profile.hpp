@@ -19,24 +19,24 @@
 // the need of thread sync, so we have them as thread local and dedup them by hash
 #define I_IBPROFILE_EVENT_DESC(type, label) static thread_local ::ibp::profile::EntryDesc I_IBPROFILE_U_NAME(_ibp_blockDesc)(type, label)
 
-#define I_PROFILE_BLOCK(type, label) \
+#define I_PROFILE_BLOCK(type, label, ...) \
     I_IBPROFILE_EVENT_DESC(type, label); \
-    ::ibp::profile::BlockSentry I_IBPROFILE_U_NAME(_ibp_profileSentry)(I_IBPROFILE_U_NAME(_ibp_blockDesc))
+    ::ibp::profile::BlockSentry I_IBPROFILE_U_NAME(_ibp_profileSentry)(I_IBPROFILE_U_NAME(_ibp_blockDesc), ##__VA_ARGS__)
 
 
-#define IBPROFILE_FUNC() I_PROFILE_BLOCK(::ibp::EventType::Function, __func__)
+#define IBPROFILE_FUNC(...) I_PROFILE_BLOCK(::ibp::EventType::Function, __func__, ##__VA_ARGS__)
 
-#define IBPROFILE_SCOPE(label) I_PROFILE_BLOCK(::ibp::EventType::Block, label)
+#define IBPROFILE_SCOPE(label, ...) I_PROFILE_BLOCK(::ibp::EventType::Block, label, ##__VA_ARGS__)
 
-#define IBPROFILE_BLOCK_BEGIN(label) \
+#define IBPROFILE_BLOCK_BEGIN(label, ...) \
     I_IBPROFILE_EVENT_DESC(::ibp::EventType::Block, label); \
-    ::ibp::profile::newEvent(I_IBPROFILE_U_NAME(_ibp_blockDesc))
+    ::ibp::profile::newEvent(I_IBPROFILE_U_NAME(_ibp_blockDesc), ##__VA_ARGS__)
 
 #define IBPROFILE_BLOCK_END() ::ibp::profile::endEvent()
 
-#define IBPROFILE_EVENT(label) \
+#define IBPROFILE_EVENT(label, ...) \
     I_IBPROFILE_EVENT_DESC(::ibp::EventType::BasicEvent, label); \
-    ::ibp::profile::newEvent(I_IBPROFILE_U_NAME(_ibp_blockDesc))
+    ::ibp::profile::newEvent(I_IBPROFILE_U_NAME(_ibp_blockDesc), ##__VA_ARGS__)
 
 #else // IBPROFILE_DISABLED
 
