@@ -39,6 +39,16 @@ void ProfileDump_toTraceJson(const ProfileDump& dump, std::ostream& out) {
                 je.val("ph", "i");
                 break;
             }
+            if (e.iextra != ibp::ProfileDump::None) {
+                auto args = je.obj("args");
+                auto& extra = dump.eventExtras[e.iextra];
+                if (extra.type == ProfileDump::EventExtra::Type::Num) {
+                    je.val("n", extra.num);
+                }
+                else if(extra.type == ProfileDump::EventExtra::Type::String) {
+                    je.val("s", dump.strings.get(extra.string));
+                }
+            }
         }
         else {
             je.val("ph", "E");
